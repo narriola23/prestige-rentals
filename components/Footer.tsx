@@ -16,6 +16,7 @@ export default function Footer() {
               <li><Link href="/rentals" className="hover:text-yellow-400 transition-colors">View Inflatables</Link></li>
               <li><Link href="/availability" className="hover:text-yellow-400 transition-colors">Book Online</Link></li>
               <li><Link href="/faq" className="hover:text-yellow-400 transition-colors">FAQ</Link></li>
+              <li><Link href="/quote" className="hover:text-yellow-400 transition-colors">Get a Quote</Link></li>
               <li><Link href="/contact" className="hover:text-yellow-400 transition-colors">Contact Us</Link></li>
             </ul>
             <h3 className="text-white font-semibold mt-6 mb-4">Policies</h3>
