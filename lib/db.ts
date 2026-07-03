@@ -8,9 +8,10 @@ function createPool(): Pool {
   if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL environment variable is not set');
   }
+  const isLocalDb = /localhost|127\.0\.0\.1/.test(process.env.DATABASE_URL);
   return new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl: isLocalDb ? false : { rejectUnauthorized: false },
     max: 10,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 5000,
