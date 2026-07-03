@@ -72,7 +72,7 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
   - `DATABASE_URL` = ✅ Set (Internal Database URL from prestige-rentals-db)
   - `RESEND_API_KEY` = ✅ Set (Resend account: narriola23@gmail.com, key name: prestige-rentals-contact)
   - `CONTACT_EMAIL` = not set (defaults to narriola23@gmail.com in the API route)
-  - `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` / `STRIPE_WEBHOOK_SECRET` = ⚠️ **NOT set yet** — no Stripe account exists. Checkout works without them (falls back to "call us to pay" + booking stays reserved), but no online card/Apple Pay charge happens until these are added. See "Next Steps" below.
+  - `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` / `STRIPE_WEBHOOK_SECRET` = ✅ Set (test mode). Stripe account: narriola23@gmail.com, sandbox "New business sandbox" (acct_1Tp99RCCSyBsaqPj). Webhook destination "energetic-glow" (we_1Tp9sdCCSyBsaqPjmM0DfTMG) → `https://prestige-rentals.onrender.com/api/webhooks/stripe`, events `payment_intent.succeeded` + `payment_intent.payment_failed`. Verified end-to-end on the live site with a test card (4242 4242 4242 4242) on 7/3/2026 — payment succeeded, webhook delivered (200 OK), booking flipped to confirmed/paid. **Still test mode — not live/real payments yet.** To go live: switch the Stripe account out of sandbox, create live-mode keys + a separate live-mode webhook endpoint, swap these 3 vars.
 
 ## Local Development
 - No `.env` file is gitignored by name (only `.env.local` and friends are, per `.gitignore`) — **always use `.env.local` for local secrets, never `.env`**, to avoid accidentally committing the DB connection string.
@@ -127,10 +127,11 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
   - Booking lifecycle: row created as `status='pending_payment'` right after the payment-option step (reserves the slot immediately); `getAvailableProducts` ignores `pending_payment` rows older than 30 minutes so abandoned checkouts don't permanently lock a slot. The Stripe webhook (not the client redirect) is the source of truth for `confirmed`/`paid`.
   - `db/schema.sql` additions: `bookings.end_date` (date-range support), `service_zip_codes` table, and payment columns on `bookings` (`payment_type`, `payment_status`, `stripe_payment_intent_id`, `amount_charged`, `paid_at`) — no separate `payments` table, kept flat to match the existing schema convention.
 
-### Stripe (scaffolded, not yet live)
-- `lib/stripe.ts`, `app/api/checkout/create-payment-intent/route.ts`, `app/api/webhooks/stripe/route.ts` all exist and are wired into checkout, but **no Stripe account/keys exist yet**.
-- Without keys: `getStripe()` returns `null` → checkout shows "payments aren't set up online yet, call us — your dates are reserved" → booking is still created and visible/manageable in `/admin/bookings` (new `Mark Paid` action added for this exact manual-payment path).
-- To go live: create a Stripe account, add `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (Dashboard → Developers → API keys) and `STRIPE_WEBHOOK_SECRET` (Dashboard → Developers → Webhooks → add endpoint `https://prestige-rentals.onrender.com/api/webhooks/stripe` for `payment_intent.succeeded` + `payment_intent.payment_failed`) to Render env vars.
+### Stripe (live in test mode as of 7/3/2026)
+- `lib/stripe.ts`, `app/api/checkout/create-payment-intent/route.ts`, `app/api/webhooks/stripe/route.ts` are wired into checkout and keys are set on Render (see "Render Deployment" above for account/webhook details).
+- Verified end-to-end on the live production site with a Stripe test card (4242 4242 4242 4242): checkout → payment succeeded → webhook delivered (200 OK, `payment_intent.succeeded`) → booking flipped to `confirmed`/`paid` in the DB → confirmation page rendered correctly.
+- `getStripe()` still returns `null` gracefully if keys are ever missing/removed → checkout falls back to "payments aren't set up online yet, call us — your dates are reserved" → booking is still created and visible/manageable in `/admin/bookings` (`Mark Paid` action covers this manual-payment path).
+- **Still test mode, not live/real payments.** To accept real charges: switch the Stripe account out of the sandbox, generate live-mode `STRIPE_SECRET_KEY`/`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, create a separate live-mode webhook endpoint (test and live mode webhooks are distinct in Stripe) for the same URL/events, get its `STRIPE_WEBHOOK_SECRET`, and swap all 3 Render env vars.
 
 ### Components updated
 - `components/Header.tsx` — added FAQ link; "Book Now" replaced with the availability widget (`compact` variant)
@@ -152,17 +153,13 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 
 ## Next Steps (priority order)
 
-### 1. Set up Stripe (unblocks live payments)
-- Create a Stripe account, get test-mode keys, add all 3 Stripe env vars to Render (see "Stripe" section above)
-- Test a real card payment through checkout in Stripe test mode before flipping to live keys
-
-### 2. Quote request page (`/quote`)
+### 1. Quote request page (`/quote`)
 - Standalone form for customers who want a quote before booking
 - Fields: name, email, phone, event date, event type, estimated guest count, location, message
 - Posts to `/api/quote` (same Resend setup as contact)
 - The `/availability` "nothing available" and "not serviceable" empty states currently fall back to `/contact` in place of this — update those links once `/quote` exists
 
-### 3. Party package pages (5 pages)
+### 2. Party package pages (5 pages)
 - `/packages/backyard-birthday`
 - `/packages/summer-water-slide`
 - `/packages/school-church`
@@ -170,23 +167,26 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 - `/packages/large-event`
 - Each: hero, what's included list, pricing, CTA to book/call
 
-### 4. SEO pass
+### 3. SEO pass
 - `app/sitemap.ts` — auto-generated sitemap including all service area + category pages (add `/availability`, `/checkout` should stay unindexed)
 - `app/robots.ts` — robots.txt
 - LocalBusiness JSON-LD in `app/layout.tsx`
 - Product schema on individual product pages
 
-### 5. Real product inventory
+### 4. Real product inventory
 - Replace 5 seed products with real photos, descriptions, and prices
 - Add missing categories: Toddler, Party Rentals, Tables & Chairs, Concessions
 - Expand `service_zip_codes` beyond the 51-ZIP starter list to match actual delivery radius
 
-### 6. Resend custom domain (when domain is purchased)
+### 5. Resend custom domain (when domain is purchased)
 - Verify domain in Resend → update `from:` in `app/api/contact/route.ts`
+
+### 6. Switch Stripe to live mode (when ready to accept real payments)
+- See "Stripe" section above for exact steps
 
 ---
 
 ## Update This Section After Every Session
 **Last updated:** 7/3/2026
-**Last thing completed:** Availability-first booking flow shipped on `feature/availability-first-booking` — ZIP + date-range search, results page, new Stripe-ready checkout (deposit/full), retired `/book`, admin payment status + manual "Mark Paid". Tested end-to-end against the live DB (minus the actual Stripe charge — no account yet).
-**Next session should start at:** Set up Stripe account + keys, then Quote request page (`/quote`)
+**Last thing completed:** Availability-first booking flow merged to `main` (PR #12) and deployed live. Stripe account created and wired up end-to-end in test mode — verified a real test-mode card payment on the live production site, webhook delivered successfully, booking flipped to confirmed/paid.
+**Next session should start at:** Quote request page (`/quote`)
