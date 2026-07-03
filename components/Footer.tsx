@@ -18,6 +18,15 @@ export default function Footer() {
               <li><Link href="/faq" className="hover:text-yellow-400 transition-colors">FAQ</Link></li>
               <li><Link href="/contact" className="hover:text-yellow-400 transition-colors">Contact Us</Link></li>
             </ul>
+            <h3 className="text-white font-semibold mt-6 mb-4">Policies</h3>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/policies/cancellation" className="hover:text-yellow-400 transition-colors">Cancellation Policy</Link></li>
+              <li><Link href="/policies/rain" className="hover:text-yellow-400 transition-colors">Rain & Weather Policy</Link></li>
+              <li><Link href="/policies/safety" className="hover:text-yellow-400 transition-colors">Safety Rules</Link></li>
+              <li><Link href="/policies/rental-agreement" className="hover:text-yellow-400 transition-colors">Rental Agreement</Link></li>
+              <li><Link href="/policies/privacy" className="hover:text-yellow-400 transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/policies/terms" className="hover:text-yellow-400 transition-colors">Terms of Service</Link></li>
+            </ul>
           </div>
           <div>
             <h3 className="text-white font-semibold mb-4">Contact Us</h3>
