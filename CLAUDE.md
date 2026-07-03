@@ -63,55 +63,100 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 
 ## Render Deployment
 - Web service: `prestige-rentals` (srv-d8rm1iugvqtc73f7p92g)
-- Database: `prestige-rentals-db` (PostgreSQL) ✅ running
+- Database: `prestige-rentals-db` (PostgreSQL) ✅ running — **upgraded to Basic 256MB**
 - Blueprint ID: exs-d8rlsa67r5hc73egnb30
 - Live URL: https://prestige-rentals.onrender.com
 - Environment variables set on Render:
-  - `NEXT_PUBLIC_BUSINESS_PHONE` = 8327161836
-  - `ADMIN_PASSWORD` = PR3st1ge#Rentals2026!
+  - `NEXT_PUBLIC_BUSINESS_PHONE` = 8327161836 (site-wide; contact page uses (346) 244-3261 hardcoded for now)
+  - `ADMIN_PASSWORD` = ✅ Set (see Render dashboard — do not commit value here)
   - `DATABASE_URL` = ✅ Set (Internal Database URL from prestige-rentals-db)
+  - `RESEND_API_KEY` = ✅ Set (Resend account: narriola23@gmail.com, key name: prestige-rentals-contact)
+  - `CONTACT_EMAIL` = not set (defaults to narriola23@gmail.com in the API route)
+
+## Email Setup
+- Contact form at `/contact` POSTs to `/app/api/contact/route.ts`
+- Uses Resend (resend.com) via native fetch — no npm package needed
+- From address is `onboarding@resend.dev` until a custom domain is verified on Resend
+- To enable a custom from address (e.g. hello@prestigerentals.com): verify domain in Resend dashboard → Domains, then update `from:` in `app/api/contact/route.ts`
 
 ---
 
-## Current State (as of 6/28/2026)
+## Current State (as of 7/2/2026)
 
 ### What's done
 - Repo created with full Next.js 14 + Tailwind + Postgres scaffold
 - Render Blueprint deployed — web service and DB both running successfully
-- `next.config.js` includes explicit webpack alias fix for `@/` path resolution
-- Node version pinned to 20.x in `package.json`
-- `render.yaml` present in repo
-- `package-lock.json` committed — deterministic installs (402 packages)
-- All build-time dependencies moved to `dependencies` (typescript, @types/*, eslint, tailwindcss, postcss, autoprefixer) — Render skips devDependencies in production
-- DATABASE_URL added to Render environment variables
-- Database migrated (`schema.sql`) and seeded (`seed.sql`) with 5 products
-- **Booking flow verified end-to-end** — customer can browse, select, book, and see confirmation page
+- Database upgraded to Basic 256MB (no expiry)
+- Database migrated and seeded with 5 products
+- Booking flow verified end-to-end
 - Site is live at https://prestige-rentals.onrender.com
 
+### Pages built ✅
+- **Homepage** (`app/page.tsx`) — full rewrite with all 10 sections: hero, categories, featured inflatables, why us, how it works, party packages, testimonials, service areas (linked chips), FAQ preview, final CTA
+- **FAQ** (`app/faq/page.tsx`) — 15 questions, 5 groups, FAQPage JSON-LD schema, `<details>/<summary>` accordion (no JS)
+- **Policy pages** (all 6):
+  - `app/policies/cancellation/page.tsx`
+  - `app/policies/rain/page.tsx`
+  - `app/policies/safety/page.tsx`
+  - `app/policies/rental-agreement/page.tsx`
+  - `app/policies/privacy/page.tsx`
+  - `app/policies/terms/page.tsx`
+- **Service areas** — index at `app/service-areas/page.tsx` + dynamic `app/service-areas/[city]/page.tsx` for all 12 cities (houston, katy, sugar-land, pearland, cypress, spring, the-woodlands, humble, conroe, tomball, jersey-village, klein). Each has unique metadata + LocalBusiness JSON-LD with areaServed.
+- **Category pages** (all 7):
+  - `app/rentals/bounce-houses/page.tsx` — fetches DB products (category: 'Bounce House')
+  - `app/rentals/water-slides/page.tsx` — fetches 'Water Slide' + 'Water Combo'
+  - `app/rentals/combo-units/page.tsx` — fetches 'Combo' + 'Water Combo'
+  - `app/rentals/obstacle-courses/page.tsx` — fetches 'Obstacle Course'
+  - `app/rentals/party-rentals/page.tsx` — call-to-inquire (no DB products yet)
+  - `app/rentals/tables-chairs/page.tsx` — call-to-inquire (no DB products yet)
+  - `app/rentals/concessions/page.tsx` — call-to-inquire (no DB products yet)
+- **Contact page** (`app/contact/page.tsx`) — phone (346) 244-3261, form wired to real API
+- **Contact API** (`app/api/contact/route.ts`) — Resend integration, graceful fallback if no API key
+
+### Components updated
+- `components/Header.tsx` — added FAQ link
+- `components/Footer.tsx` — 4-column layout (Quick Links, Policies, Service Areas, Contact)
+- `lib/products.ts` — added `getProductsByCategories(categories: string[])` function
+
 ### ⚠️ Known issues / watch items
-- Free Render DB (`prestige-rentals-db`) **expires July 20, 2026** — upgrade to paid instance or data will be deleted
-- Render shell access requires paid plan (Starter+) — run migrations locally using external DB URL if needed
 - Only 5 seed products in DB — real inventory not yet added
+- Resend sends from `onboarding@resend.dev` until custom domain verified
+- `NEXT_PUBLIC_BUSINESS_PHONE` env var (8327161836) is not yet used by all pages — contact page hardcodes (346) 244-3261 separately
+- Static route pages use `export const dynamic = "force-dynamic"` for DB fetches
 
 ---
 
-## Next Steps
+## Next Steps (priority order)
 
-### Immediate
-- **Upgrade Render DB before July 20, 2026** to avoid data loss
+### 1. Quote request page (`/quote`)
+- Standalone form for customers who want a quote before booking
+- Fields: name, email, phone, event date, event type, estimated guest count, location, message
+- Posts to `/api/quote` (same Resend setup as contact)
 
-### Next session — Page audit
-- Review what pages currently exist in `/app` vs the full Required Pages list above
-- Identify gaps and prioritize build order
-- Start building missing pages (category pages, service area pages, FAQ, policies, contact)
+### 2. Party package pages (5 pages)
+- `/packages/backyard-birthday`
+- `/packages/summer-water-slide`
+- `/packages/school-church`
+- `/packages/toddler`
+- `/packages/large-event`
+- Each: hero, what's included list, pricing, CTA to book/call
 
-### After page build-out
-- Add real product inventory (photos, prices, descriptions)
-- SEO pass: schema markup (LocalBusiness, Product, FAQ), sitemap, robots.txt, meta tags per page
+### 3. SEO pass
+- `app/sitemap.ts` — auto-generated sitemap including all service area + category pages
+- `app/robots.ts` — robots.txt
+- LocalBusiness JSON-LD in `app/layout.tsx`
+- Product schema on individual product pages
+
+### 4. Real product inventory
+- Replace 5 seed products with real photos, descriptions, and prices
+- Add missing categories: Toddler, Party Rentals, Tables & Chairs, Concessions
+
+### 5. Resend custom domain (when domain is purchased)
+- Verify domain in Resend → update `from:` in `app/api/contact/route.ts`
 
 ---
 
 ## Update This Section After Every Session
-**Last updated:** 6/28/2026
-**Last thing completed:** Site live, DB migrated and seeded, booking flow verified end-to-end
-**Next session should start at:** Page audit — compare existing `/app` routes to Required Pages list
+**Last updated:** 7/2/2026
+**Last thing completed:** Contact page fixed (phone + real email via Resend), RESEND_API_KEY added to Render, all category pages + service area pages + policy pages + FAQ built
+**Next session should start at:** Quote request page (`/quote`)
