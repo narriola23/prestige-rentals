@@ -16,6 +16,7 @@ export default function Header() {
           </Link>
           <nav className="hidden md:flex items-center gap-8">
             <Link href="/rentals" className="text-gray-300 hover:text-yellow-400 font-medium transition-colors">Inflatables</Link>
+            <Link href="/faq" className="text-gray-300 hover:text-yellow-400 font-medium transition-colors">FAQ</Link>
             <Link href="/contact" className="text-gray-300 hover:text-yellow-400 font-medium transition-colors">Contact</Link>
             <Link href="/book" className="btn-primary text-sm">Book Now</Link>
           </nav>
@@ -32,6 +33,7 @@ export default function Header() {
         {menuOpen && (
           <div className="md:hidden py-4 border-t border-blue-900 space-y-3">
             <Link href="/rentals" className="block px-2 py-2 text-gray-300 hover:text-yellow-400" onClick={() => setMenuOpen(false)}>Inflatables</Link>
+            <Link href="/faq" className="block px-2 py-2 text-gray-300 hover:text-yellow-400" onClick={() => setMenuOpen(false)}>FAQ</Link>
             <Link href="/contact" className="block px-2 py-2 text-gray-300 hover:text-yellow-400" onClick={() => setMenuOpen(false)}>Contact</Link>
             <Link href="/book" className="block btn-primary text-center text-sm mt-2" onClick={() => setMenuOpen(false)}>Book Now</Link>
           </div>
