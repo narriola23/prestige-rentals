@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 
 export const metadata: Metadata = {
   title: "Service Areas | Bounce House Rentals Across Greater Houston",
@@ -77,14 +78,12 @@ export default function ServiceAreasPage() {
           <p className="text-gray-600 mb-6 max-w-xl mx-auto">
             Browse our inflatables, check availability for your date, and reserve online in minutes.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/book" className="btn-primary text-lg px-8 py-4">
-              📅 Book Now
-            </Link>
-            <Link href="/rentals" className="btn-secondary text-lg px-8 py-4">
-              Browse Inflatables
-            </Link>
+          <div className="max-w-2xl mx-auto text-left mb-4">
+            <AvailabilitySearchWidget />
           </div>
+          <Link href="/rentals" className="text-blue-950 font-semibold underline underline-offset-4">
+            Browse Inflatables
+          </Link>
         </section>
 
       </div>

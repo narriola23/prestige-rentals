@@ -7,7 +7,7 @@ async function getDashboardStats() {
     const [bookings, products, pending, revenue] = await Promise.all([
       query('SELECT COUNT(*) as count FROM bookings'),
       query('SELECT COUNT(*) as count FROM products WHERE is_active = true'),
-      query("SELECT COUNT(*) as count FROM bookings WHERE status = 'pending'"),
+      query("SELECT COUNT(*) as count FROM bookings WHERE status IN ('pending', 'pending_payment')"),
       query("SELECT COALESCE(SUM(subtotal), 0) as total FROM bookings WHERE status != 'cancelled'"),
     ]);
     return {

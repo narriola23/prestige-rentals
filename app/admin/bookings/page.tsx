@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
-import { UpdateBookingStatus } from "./actions";
+import { UpdateBookingStatus, MarkPaymentPaid } from "./actions";
 
 async function getBookings() {
   try {
@@ -10,8 +10,8 @@ async function getBookings() {
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const cls: Record<string, string> = { pending: "bg-yellow-100 text-yellow-800", confirmed: "bg-green-100 text-green-800", cancelled: "bg-red-100 text-red-800", completed: "bg-blue-100 text-blue-800" };
-  return <span className={"px-2 py-1 rounded-full text-xs font-semibold capitalize " + (cls[status] || "bg-gray-100 text-gray-800")}>{status}</span>;
+  const cls: Record<string, string> = { pending_payment: "bg-orange-100 text-orange-800", pending: "bg-yellow-100 text-yellow-800", confirmed: "bg-green-100 text-green-800", cancelled: "bg-red-100 text-red-800", completed: "bg-blue-100 text-blue-800" };
+  return <span className={"px-2 py-1 rounded-full text-xs font-semibold capitalize " + (cls[status] || "bg-gray-100 text-gray-800")}>{status.replace("_", " ")}</span>;
 }
 
 export default async function AdminBookingsPage() {
@@ -32,7 +32,7 @@ export default async function AdminBookingsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 border-b">
-                  <tr>{["Booking #","Customer","Product","Event Date","Address","Total","Deposit","Status","Actions"].map(h => <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr>
+                  <tr>{["Booking #","Customer","Product","Event Date","Address","Total","Payment","Status","Actions"].map(h => <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {bookings.map((b: any) => (
@@ -43,7 +43,10 @@ export default async function AdminBookingsPage() {
                       <td className="px-4 py-3 whitespace-nowrap"><div>{new Date(b.event_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</div><div className="text-gray-400 text-xs">{b.start_time} – {b.end_time}</div></td>
                       <td className="px-4 py-3 text-xs text-gray-500">{b.delivery_address}<br />{b.city}, {b.state} {b.zip_code}</td>
                       <td className="px-4 py-3 font-bold whitespace-nowrap">{"$" + (b.subtotal / 100).toFixed(2)}</td>
-                      <td className="px-4 py-3 whitespace-nowrap"><span className={b.deposit_paid ? "text-green-600 font-semibold" : "text-red-500"}>{b.deposit_paid ? "✅ Paid" : "⏳ Pending"}</span></td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="text-xs text-gray-400 capitalize mb-1">{b.payment_type || "—"}{b.payment_status && b.payment_status !== "paid" ? " · " + b.payment_status : ""}</div>
+                        <MarkPaymentPaid bookingId={b.id} currentPaymentStatus={b.payment_status || "unpaid"} />
+                      </td>
                       <td className="px-4 py-3"><StatusBadge status={b.status} /></td>
                       <td className="px-4 py-3 whitespace-nowrap"><UpdateBookingStatus bookingId={b.id} currentStatus={b.status} /></td>
                     </tr>

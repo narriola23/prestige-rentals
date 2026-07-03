@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 
 export const metadata: Metadata = {
   title: "Concession Machine Rentals Houston | Popcorn, Snow Cones & More | Prestige Rentals",
@@ -88,10 +89,7 @@ export default function ConcessionsPage() {
         <section className="bg-yellow-500 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-black text-blue-950 mb-2">Add Concessions to Your Party</h2>
           <p className="text-blue-800 mb-6">Call us when you book your inflatable and we&apos;ll add a concession machine to your order.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/book" className="bg-blue-950 hover:bg-blue-900 text-white font-bold px-8 py-4 rounded-lg transition-all shadow-lg inline-block">📅 Book Online</Link>
-            <a href="tel:+18327161836" className="bg-white hover:bg-gray-50 text-blue-950 font-bold px-8 py-4 rounded-lg border border-blue-200 transition-all inline-block">📞 (832) 716-1836</a>
-          </div>
+          <div className="max-w-xl mx-auto text-left mb-4"><AvailabilitySearchWidget /></div><a href="tel:+18327161836" className="text-blue-950 font-bold underline underline-offset-4">Or call: 📞 (832) 716-1836</a>
         </section>
 
       </div>

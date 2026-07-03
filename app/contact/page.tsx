@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
@@ -71,7 +72,7 @@ export default function ContactPage() {
             <div className="bg-yellow-500 rounded-2xl p-6 text-center">
               <h3 className="text-xl font-black text-blue-950 mb-2">Ready to Book?</h3>
               <p className="text-blue-800 text-sm mb-4">Skip the form — book directly online and check availability instantly.</p>
-              <a href="/book" className="btn-secondary inline-block">Book Online Now</a>
+              <AvailabilitySearchWidget variant="compact" className="inline-block" />
             </div>
           </div>
         </div>

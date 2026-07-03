@@ -8,3 +8,23 @@ VALUES
   ('Superhero Obstacle Course', 'superhero-obstacle-course', 'A full obstacle course experience for the ultimate superhero party! Kids race through pop-up obstacles, climb a wall, crawl through tunnels, and finish with a giant slide. Great for larger events, school field days, and corporate family nights. Ages 4+.', 34900, 10000, 'Obstacle Course', true, 'https://picsum.photos/seed/bounce4/800/500', 60, 45, 15, 35.0, 10.0, 12.0),
   ('Toddler Town Soft Play', 'toddler-town-soft-play', 'Designed specifically for the littlest guests! Our Toddler Town soft play area features a small bounce house, foam-padded shapes, a ball pit, and a mini slide — all sized perfectly for children ages 1–5. A must-have for first birthdays and baby showers.', 14900, 4000, 'Toddler', true, 'https://picsum.photos/seed/bounce5/800/500', 25, 25, 12, 20.0, 12.0, 8.0)
 ON CONFLICT (slug) DO NOTHING;
+
+-- Starter delivery ZIP whitelist covering the 12 existing service-area
+-- cities. NOT a complete list — this is a starting point to expand from
+-- real delivery-radius data; edit directly in the DB as coverage grows.
+INSERT INTO service_zip_codes (zip_code, city) VALUES
+  ('77002', 'Houston'), ('77003', 'Houston'), ('77004', 'Houston'), ('77005', 'Houston'),
+  ('77006', 'Houston'), ('77007', 'Houston'), ('77008', 'Houston'), ('77009', 'Houston'),
+  ('77018', 'Houston'), ('77019', 'Houston'), ('77024', 'Houston'), ('77027', 'Houston'),
+  ('77056', 'Houston'), ('77057', 'Houston'), ('77074', 'Houston'), ('77081', 'Houston'),
+  ('77429', 'Cypress'), ('77433', 'Cypress'),
+  ('77373', 'Spring'), ('77379', 'Spring'), ('77386', 'Spring'), ('77388', 'Spring'), ('77389', 'Spring'),
+  ('77375', 'Tomball'), ('77377', 'Tomball'),
+  ('77449', 'Katy'), ('77450', 'Katy'), ('77494', 'Katy'),
+  ('77380', 'The Woodlands'), ('77381', 'The Woodlands'), ('77382', 'The Woodlands'), ('77384', 'The Woodlands'), ('77385', 'The Woodlands'),
+  ('77338', 'Humble'), ('77339', 'Humble'), ('77346', 'Humble'), ('77396', 'Humble'),
+  ('77301', 'Conroe'), ('77302', 'Conroe'), ('77303', 'Conroe'), ('77304', 'Conroe'), ('77306', 'Conroe'),
+  ('77478', 'Sugar Land'), ('77479', 'Sugar Land'), ('77496', 'Sugar Land'),
+  ('77581', 'Pearland'), ('77584', 'Pearland'), ('77588', 'Pearland'),
+  ('77040', 'Jersey Village'), ('77041', 'Jersey Village'), ('77065', 'Jersey Village')
+ON CONFLICT (zip_code) DO NOTHING;

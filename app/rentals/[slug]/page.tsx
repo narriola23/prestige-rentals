@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 
 export const dynamic = "force-dynamic";
 
@@ -63,7 +64,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
               {product.setup_time_minutes && <div className="bg-white rounded-xl p-4 shadow-sm border"><div className="text-2xl mb-1">⏱️</div><div className="text-xs text-gray-500 uppercase">Setup Time</div><div className="font-bold text-blue-950">{product.setup_time_minutes + " min"}</div></div>}
               <div className="bg-white rounded-xl p-4 shadow-sm border"><div className="text-2xl mb-1">✅</div><div className="text-xs text-gray-500 uppercase">Includes</div><div className="font-bold text-blue-950">Delivery &amp; Setup</div></div>
             </div>
-            <Link href={"/book?product=" + product.slug} className="btn-primary text-lg w-full text-center block">📅 Book This Inflatable</Link>
+            <AvailabilitySearchWidget presetProductSlug={product.slug} />
             <p className="text-center text-xs text-gray-400 mt-3">✅ No charge until confirmed • Free cancellation 48hrs prior</p>
           </div>
         </div>

@@ -13,6 +13,12 @@ const nextConfig = {
               config.resolve.alias['@'] = path.resolve(__dirname);
               return config;
       },
+      async redirects() {
+              return [
+                      { source: '/book', destination: '/availability', permanent: true },
+                      { source: '/book/success', destination: '/', permanent: true },
+              ];
+      },
 };
 
 module.exports = nextConfig;

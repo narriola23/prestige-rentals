@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 
 export const metadata: Metadata = {
   title: "Safety Rules | Prestige Rentals Houston",
@@ -114,7 +115,7 @@ export default function SafetyRulesPage() {
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
             <p className="text-blue-950 font-semibold mb-1">Have a safe and amazing party!</p>
             <p className="text-gray-600 text-sm mb-4">These rules exist because we care about your guests. Thank you for taking them seriously.</p>
-            <Link href="/book" className="btn-primary inline-block">📅 Book Your Inflatable</Link>
+            <AvailabilitySearchWidget variant="compact" className="inline-block" />
           </div>
         </div>
       </div>
