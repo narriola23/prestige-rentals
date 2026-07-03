@@ -27,6 +27,14 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return queryOne<Product>('SELECT * FROM products WHERE slug = $1 AND is_active = true', [slug]);
 }
 
+export async function getProductsByCategories(categories: string[]): Promise<Product[]> {
+  const placeholders = categories.map((_, i) => '$' + (i + 1)).join(', ');
+  return query<Product>(
+    'SELECT * FROM products WHERE is_active = true AND category = ANY(ARRAY[' + placeholders + ']) ORDER BY name ASC',
+    categories
+  );
+}
+
 export async function getAllProducts(): Promise<Product[]> {
   return query<Product>('SELECT * FROM products ORDER BY name ASC');
 }
