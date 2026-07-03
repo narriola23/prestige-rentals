@@ -21,6 +21,12 @@ services:
       - key: ADMIN_PASSWORD
         generateValue: false
         sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
 
 databases:
   - name: prestige-rentals-db
