@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 
 export const metadata: Metadata = {
   title: "FAQ – Bounce House Rental Questions | Prestige Rentals Houston",
@@ -177,9 +178,7 @@ export default function FaqPage() {
 
         <div className="text-center pt-4">
           <p className="text-gray-500 mb-4 text-sm">Ready to reserve your inflatable?</p>
-          <Link href="/book" className="btn-primary text-lg px-10 py-4">
-            📅 Book Now — It&apos;s Easy!
-          </Link>
+          <AvailabilitySearchWidget variant="compact" className="text-lg px-10 py-4" />
         </div>
       </div>
     </>

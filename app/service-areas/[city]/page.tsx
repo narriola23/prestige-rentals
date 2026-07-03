@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 import { notFound } from "next/navigation";
 
 const cityData: Record<string, {
@@ -270,12 +271,10 @@ export default function ServiceAreaPage({
             <p className="text-sm text-gray-500">
               🚗 <span className="font-medium">{city.driveTime}</span>
             </p>
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
-              <Link href="/book" className="btn-primary text-center">
-                📅 Book Now
-              </Link>
-              <a href="tel:+18327161836" className="btn-secondary text-center">
-                📞 (832) 716-1836
+            <div className="mt-6">
+              <AvailabilitySearchWidget />
+              <a href="tel:+18327161836" className="block text-center mt-3 text-blue-950 font-semibold underline underline-offset-4">
+                Or call us: 📞 (832) 716-1836
               </a>
             </div>
           </div>
@@ -375,20 +374,15 @@ export default function ServiceAreaPage({
             Check availability and reserve your inflatable online in minutes. Our
             team will confirm within 2 hours.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/book"
-              className="bg-blue-950 hover:bg-blue-900 text-white font-bold px-8 py-4 rounded-lg transition-all shadow-lg inline-block"
-            >
-              📅 Book Online Now
-            </Link>
-            <a
-              href="tel:+18327161836"
-              className="bg-white hover:bg-gray-50 text-blue-950 font-bold px-8 py-4 rounded-lg border border-blue-200 transition-all inline-block"
-            >
-              📞 Call (832) 716-1836
-            </a>
+          <div className="max-w-2xl mx-auto text-left mb-4">
+            <AvailabilitySearchWidget />
           </div>
+          <a
+            href="tel:+18327161836"
+            className="text-blue-950 font-bold underline underline-offset-4"
+          >
+            Or call: 📞 (832) 716-1836
+          </a>
         </section>
 
         <section>

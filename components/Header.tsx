@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import AvailabilitySearchWidget from "./AvailabilitySearchWidget";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,7 +19,7 @@ export default function Header() {
             <Link href="/rentals" className="text-gray-300 hover:text-yellow-400 font-medium transition-colors">Inflatables</Link>
             <Link href="/faq" className="text-gray-300 hover:text-yellow-400 font-medium transition-colors">FAQ</Link>
             <Link href="/contact" className="text-gray-300 hover:text-yellow-400 font-medium transition-colors">Contact</Link>
-            <Link href="/book" className="btn-primary text-sm">Book Now</Link>
+            <AvailabilitySearchWidget variant="compact" />
           </nav>
           <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-white p-2" aria-label="Toggle menu">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,7 +36,7 @@ export default function Header() {
             <Link href="/rentals" className="block px-2 py-2 text-gray-300 hover:text-yellow-400" onClick={() => setMenuOpen(false)}>Inflatables</Link>
             <Link href="/faq" className="block px-2 py-2 text-gray-300 hover:text-yellow-400" onClick={() => setMenuOpen(false)}>FAQ</Link>
             <Link href="/contact" className="block px-2 py-2 text-gray-300 hover:text-yellow-400" onClick={() => setMenuOpen(false)}>Contact</Link>
-            <Link href="/book" className="block btn-primary text-center text-sm mt-2" onClick={() => setMenuOpen(false)}>Book Now</Link>
+            <AvailabilitySearchWidget variant="compact" className="block text-center mt-2" onClick={() => setMenuOpen(false)} />
           </div>
         )}
       </div>

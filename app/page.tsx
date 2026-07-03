@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 
 const categories = [
   { icon: "🏰", name: "Bounce Houses", desc: "Classic bouncers for every age and theme", href: "/rentals" },
@@ -112,9 +113,11 @@ export default function HomePage() {
           <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
             Safe, clean, and fully insured bounce houses for birthdays, school events, and corporate parties across Greater Houston.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/book" className="btn-primary text-lg px-8 py-4">📅 Book Now — It&apos;s Easy!</Link>
-            <Link href="/rentals" className="btn-secondary text-lg px-8 py-4 border border-blue-800">Browse All Inflatables</Link>
+          <div className="max-w-2xl mx-auto text-left">
+            <AvailabilitySearchWidget />
+          </div>
+          <div className="mt-6">
+            <Link href="/rentals" className="text-yellow-400 hover:text-yellow-300 font-semibold underline underline-offset-4">Browse All Inflatables</Link>
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-gray-300">
             <span>✅ Free Delivery &amp; Setup</span>
@@ -214,7 +217,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className="text-center mt-12">
-            <Link href="/book" className="btn-primary text-lg px-10 py-4">Get Started Today</Link>
+            <AvailabilitySearchWidget variant="compact" className="text-lg px-10 py-4" />
           </div>
         </div>
       </section>
@@ -244,9 +247,11 @@ export default function HomePage() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/book" className="btn-primary text-sm text-center block">
-                    {pkg.price === "Custom quote" ? "Get a Quote" : "Book This Package"}
-                  </Link>
+                  {pkg.price === "Custom quote" ? (
+                    <Link href="/contact" className="btn-primary text-sm text-center block">Get a Quote</Link>
+                  ) : (
+                    <AvailabilitySearchWidget variant="compact" className="text-sm text-center block" />
+                  )}
                 </div>
               </div>
             ))}
@@ -332,18 +337,15 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-black text-blue-950 mb-4">Ready to Book Your Party?</h2>
           <p className="text-blue-800 mb-8 text-lg">Check availability and reserve your inflatable in minutes.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/book"
-              className="bg-blue-950 hover:bg-blue-900 text-white font-bold px-10 py-4 rounded-lg text-lg transition-all shadow-lg inline-block"
-            >
-              📅 Book Now — It&apos;s Easy!
-            </Link>
+          <div className="max-w-2xl mx-auto text-left">
+            <AvailabilitySearchWidget />
+          </div>
+          <div className="mt-6">
             <a
               href="tel:+18327161836"
-              className="bg-white hover:bg-gray-50 text-blue-950 font-bold px-10 py-4 rounded-lg text-lg border border-blue-200 transition-all inline-block"
+              className="text-blue-950 font-bold underline underline-offset-4"
             >
-              📞 (832) 716-1836
+              Or call us: 📞 (832) 716-1836
             </a>
           </div>
         </div>

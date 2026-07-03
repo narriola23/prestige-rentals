@@ -14,7 +14,7 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/rentals" className="hover:text-yellow-400 transition-colors">View Inflatables</Link></li>
-              <li><Link href="/book" className="hover:text-yellow-400 transition-colors">Book Online</Link></li>
+              <li><Link href="/availability" className="hover:text-yellow-400 transition-colors">Book Online</Link></li>
               <li><Link href="/faq" className="hover:text-yellow-400 transition-colors">FAQ</Link></li>
               <li><Link href="/contact" className="hover:text-yellow-400 transition-colors">Contact Us</Link></li>
             </ul>
