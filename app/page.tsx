@@ -248,7 +248,7 @@ export default function HomePage() {
                     ))}
                   </ul>
                   {pkg.price === "Custom quote" ? (
-                    <Link href="/quote" className="btn-primary text-sm text-center block">Get a Quote</Link>
+                    <Link href="/contact" className="btn-primary text-sm text-center block">Get a Quote</Link>
                   ) : (
                     <AvailabilitySearchWidget variant="compact" className="text-sm text-center block" />
                   )}
