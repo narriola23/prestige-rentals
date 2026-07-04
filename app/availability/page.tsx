@@ -96,7 +96,7 @@ export default async function AvailabilityPage({ searchParams }: { searchParams:
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a href="sms:+18327161836" className="btn-primary inline-block">💬 Text Us</a>
-              <Link href="/contact" className="btn-secondary inline-block">Get a Quote</Link>
+              <Link href="/quote" className="btn-secondary inline-block">Get a Quote</Link>
             </div>
           </div>
         )}
@@ -124,7 +124,7 @@ export default async function AvailabilityPage({ searchParams }: { searchParams:
             )}
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a href="sms:+18327161836" className="btn-primary inline-block">💬 Text Us</a>
-              <Link href="/contact" className="btn-secondary inline-block">Get a Quote</Link>
+              <Link href="/quote" className="btn-secondary inline-block">Get a Quote</Link>
             </div>
           </div>
         )}
