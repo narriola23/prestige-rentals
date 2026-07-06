@@ -34,3 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw source files dropped in repo root — not meant to ship (see scripts/process-product-images.js
+# for the processed output that does ship, under public/images/products/)
+/Bouce House Pics/
+/Prestige_Rentals_Website_Intake*.xlsx

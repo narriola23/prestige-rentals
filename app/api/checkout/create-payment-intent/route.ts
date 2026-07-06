@@ -20,15 +20,15 @@ export async function POST(request: NextRequest) {
     }
 
     const { query, queryOne } = await import('@/lib/db');
-    const booking = await queryOne<{ id: number; subtotal: number; deposit_due: number }>(
-      'SELECT id, subtotal, deposit_due FROM bookings WHERE id = $1',
+    const booking = await queryOne<{ id: number; subtotal: number; deposit_due: number; delivery_fee: number }>(
+      'SELECT id, subtotal, deposit_due, delivery_fee FROM bookings WHERE id = $1',
       [bookingId]
     );
     if (!booking) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
 
-    const amount = paymentType === 'full' ? booking.subtotal : booking.deposit_due;
+    const amount = paymentType === 'full' ? booking.subtotal + booking.delivery_fee : booking.deposit_due;
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount,

@@ -42,7 +42,10 @@ export default async function AdminBookingsPage() {
                       <td className="px-4 py-3 font-medium whitespace-nowrap">{b.product_name}</td>
                       <td className="px-4 py-3 whitespace-nowrap"><div>{new Date(b.event_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</div><div className="text-gray-400 text-xs">{b.start_time} – {b.end_time}</div></td>
                       <td className="px-4 py-3 text-xs text-gray-500">{b.delivery_address}<br />{b.city}, {b.state} {b.zip_code}</td>
-                      <td className="px-4 py-3 font-bold whitespace-nowrap">{"$" + (b.subtotal / 100).toFixed(2)}</td>
+                      <td className="px-4 py-3 font-bold whitespace-nowrap">
+                        {"$" + ((b.subtotal + (b.delivery_fee || 0)) / 100).toFixed(2)}
+                        {b.delivery_fee > 0 && <div className="text-gray-400 text-xs font-normal">incl. ${(b.delivery_fee / 100).toFixed(2)} delivery</div>}
+                      </td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <div className="text-xs text-gray-400 capitalize mb-1">{b.payment_type || "—"}{b.payment_status && b.payment_status !== "paid" ? " · " + b.payment_status : ""}</div>
                         <MarkPaymentPaid bookingId={b.id} currentPaymentStatus={b.payment_status || "unpaid"} />

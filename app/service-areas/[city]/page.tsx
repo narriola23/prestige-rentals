@@ -27,7 +27,7 @@ const cityData: Record<string, {
       "Kingwood", "Atascocita", "Westchase", "Energy Corridor",
     ],
     eventTypes: ["Backyard birthday parties", "School carnivals", "Church events", "HOA community days", "Corporate picnics"],
-    driveTime: "Local — no travel fee",
+    driveTime: "Local — free delivery within 20 miles of our base",
   },
   katy: {
     name: "Katy",
@@ -208,7 +208,7 @@ export async function generateMetadata({
   if (!city) return {};
   return {
     title: `Bounce House Rentals in ${city.name}, TX | Prestige Rentals`,
-    description: `Prestige Rentals delivers premium bounce houses and inflatables to ${city.name}, TX. Free delivery and setup. Book online or call (832) 716-1836.`,
+    description: `Prestige Rentals delivers premium bounce houses and inflatables to ${city.name}, TX. Free delivery within 20 miles, setup included. Book online or call (832) 716-1836.`,
   };
 }
 
@@ -301,7 +301,7 @@ export default function ServiceAreaPage({
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { icon: "🚚", title: "Free Delivery", desc: `We deliver to ${city.name} at no extra charge within our standard service area.` },
+              { icon: "🚚", title: "Free Delivery", desc: `Free delivery to ${city.name} within 20 miles of our Houston base — a small per-mile fee applies beyond that.` },
               { icon: "🔧", title: "Professional Setup", desc: "Our crew handles all setup and staking — takes about 30 minutes." },
               { icon: "✅", title: "Safety Inspection", desc: "Every unit is inspected on-site before we leave your property." },
               { icon: "📦", title: "Free Pickup", desc: "We return at the end of your rental window and break everything down." },

@@ -12,15 +12,15 @@ const categories = [
 ];
 
 const featuredItems = [
-  { name: "Classic Castle Bouncer", price: "$175", img: "https://picsum.photos/seed/bounce1/600/400", slug: "classic-castle-bouncer" },
-  { name: "Tropical Splash Combo", price: "$275", img: "https://picsum.photos/seed/bounce2/600/400", slug: "tropical-splash-combo" },
-  { name: "Princess Palace Jumper", price: "$199", img: "https://picsum.photos/seed/bounce3/600/400", slug: "princess-palace-jumper" },
+  { name: "Marvel Adventures", price: "$255", img: "/images/products/marvel-adventures/1.jpg", slug: "marvel-adventures" },
+  { name: "Single Princess Waterslide", price: "$185", img: "/images/products/single-princess-waterslide/1.jpg", slug: "single-princess-waterslide" },
+  { name: "The Castle", price: "$110", img: "/images/products/the-castle/1.jpg", slug: "the-castle" },
 ];
 
 const whyUs = [
   { icon: "✅", title: "Fully Insured", desc: "General liability coverage on every single rental. Proof of insurance available on request." },
   { icon: "⭐", title: "5-Star Rated", desc: "Hundreds of 5-star reviews from Houston families who've trusted us to show up and deliver." },
-  { icon: "🚚", title: "Free Delivery & Setup", desc: "No hidden fees. We load, deliver, set up, and pick up — you focus on the party." },
+  { icon: "🚚", title: "Free Delivery & Setup", desc: "Free within 20 miles of our Houston base — a small per-mile fee applies beyond that. We load, deliver, set up, and pick up." },
   { icon: "🧼", title: "Spotlessly Clean", desc: "Every inflatable is sanitized top to bottom after every rental. Always." },
   { icon: "📅", title: "Easy Online Booking", desc: "Reserve in minutes. We confirm within 2 hours and walk you through every detail." },
   { icon: "🏠", title: "Local & Family-Owned", desc: "We're a Houston business. When you call, a real local person answers." },
@@ -85,7 +85,7 @@ const faqPreview = [
   },
   {
     q: "What's included in the rental price?",
-    a: "Every rental includes free delivery, professional setup, a safety inspection, and pickup. No hidden fees.",
+    a: "Every rental includes professional setup, a safety inspection, and pickup. Delivery is free within 20 miles of our Houston base, with a small per-mile fee beyond that.",
   },
   {
     q: "What happens if it rains on my event day?",
@@ -286,7 +286,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-black text-blue-950 mb-3">Service Area</h2>
           <p className="text-gray-600 mb-8 max-w-xl mx-auto">
-            We proudly serve Houston and all surrounding communities. Free delivery on every rental.
+            We proudly serve Houston and all surrounding communities. Free delivery within 20 miles — $2/mile beyond that.
           </p>
           <div className="flex flex-wrap justify-center gap-3 mb-8">
             {serviceAreaCities.map((city) => (

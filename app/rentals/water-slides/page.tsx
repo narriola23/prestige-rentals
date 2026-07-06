@@ -52,7 +52,7 @@ export default async function WaterSlidesPage() {
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           The ultimate way to beat a Houston summer. Premium water slides and wet combo units delivered, set up, and ready to go.
         </p>
-        <p className="text-yellow-400 font-bold mt-3">Starting at $275/day · Free delivery &amp; setup</p>
+        <p className="text-yellow-400 font-bold mt-3">Starting at $180/day · Free delivery within 20 miles</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { calculateDeliveryFee } from "@/lib/delivery-fee";
 
 interface CheckoutProduct {
   id: number;
@@ -144,7 +145,9 @@ export default function CheckoutForm({ product, startDate, endDate, zip }: Check
 
   const ic = "w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition";
   const lc = "block text-sm font-semibold text-blue-950 mb-1";
-  const amountDue = form.paymentType === "full" ? subtotal : deposit;
+  const deliveryFee = calculateDeliveryFee(form.zipCode)?.feeCents ?? 0;
+  const total = subtotal + deliveryFee;
+  const amountDue = form.paymentType === "full" ? total : deposit;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -227,20 +230,22 @@ export default function CheckoutForm({ product, startDate, endDate, zip }: Check
               <h2 className="text-xl font-black text-blue-950 mb-4">Choose Your Payment Option</h2>
               <div className="bg-gray-50 rounded-xl p-5 space-y-2 text-sm mb-2">
                 <div className="flex justify-between"><span className="text-gray-500 font-medium">Rental Total ({days} day{days > 1 ? "s" : ""})</span><span className="font-bold">{money(subtotal)}</span></div>
+                <div className="flex justify-between"><span className="text-gray-500 font-medium">Delivery Fee</span><span className="font-bold">{deliveryFee > 0 ? money(deliveryFee) : "Free"}</span></div>
+                <div className="flex justify-between border-t pt-2"><span className="text-gray-500 font-medium">Total</span><span className="font-bold">{money(total)}</span></div>
               </div>
               <div className="space-y-3">
                 <label className={"flex items-start gap-3 border-2 rounded-xl p-4 cursor-pointer transition " + (form.paymentType === "deposit" ? "border-yellow-500 bg-yellow-50" : "border-gray-200")}>
                   <input type="radio" name="paymentType" checked={form.paymentType === "deposit"} onChange={() => setForm({ ...form, paymentType: "deposit" })} className="mt-1" />
                   <div>
                     <div className="font-bold text-blue-950">Pay 50% Deposit Now</div>
-                    <div className="text-sm text-gray-500">{money(deposit)} due now, {money(subtotal - deposit)} due before/at delivery</div>
+                    <div className="text-sm text-gray-500">{money(deposit)} due now, {money(total - deposit)} due before/at delivery</div>
                   </div>
                 </label>
                 <label className={"flex items-start gap-3 border-2 rounded-xl p-4 cursor-pointer transition " + (form.paymentType === "full" ? "border-yellow-500 bg-yellow-50" : "border-gray-200")}>
                   <input type="radio" name="paymentType" checked={form.paymentType === "full"} onChange={() => setForm({ ...form, paymentType: "full" })} className="mt-1" />
                   <div>
                     <div className="font-bold text-blue-950">Pay in Full Now</div>
-                    <div className="text-sm text-gray-500">{money(subtotal)} due now, nothing due at delivery</div>
+                    <div className="text-sm text-gray-500">{money(total)} due now, nothing due at delivery</div>
                   </div>
                 </label>
               </div>

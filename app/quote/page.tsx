@@ -134,7 +134,7 @@ export default function QuotePage() {
               <div className="space-y-4">
                 <div className="flex items-start gap-4"><div className="text-2xl">📞</div><div><p className="font-semibold text-blue-950">Phone</p><a href="tel:+13462443261" className="text-yellow-600 font-medium">(346) 244-3261</a><p className="text-sm text-gray-500 mt-0.5">Mon–Sun, 7am–8pm</p></div></div>
                 <div className="flex items-start gap-4"><div className="text-2xl">✉️</div><div><p className="font-semibold text-blue-950">Email</p><a href="mailto:info@prestigerentals.com" className="text-yellow-600 font-medium">info@prestigerentals.com</a></div></div>
-                <div className="flex items-start gap-4"><div className="text-2xl">📍</div><div><p className="font-semibold text-blue-950">Service Area</p><p className="text-gray-600">Houston, TX &amp; Surrounding Areas</p><p className="text-sm text-gray-500">Free delivery within 30 miles</p></div></div>
+                <div className="flex items-start gap-4"><div className="text-2xl">📍</div><div><p className="font-semibold text-blue-950">Service Area</p><p className="text-gray-600">Houston, TX &amp; Surrounding Areas</p><p className="text-sm text-gray-500">Free delivery within 20 miles</p></div></div>
               </div>
             </div>
             <div className="bg-yellow-500 rounded-2xl p-6 text-center">

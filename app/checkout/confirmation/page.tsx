@@ -65,7 +65,9 @@ export default async function ConfirmationPage({ searchParams }: { searchParams:
           </span></div>
           <div className="flex justify-between"><span className="text-gray-500">Delivery To</span><span className="font-semibold text-right max-w-[60%]">{booking.delivery_address}, {booking.city}, {booking.state} {booking.zip_code}</span></div>
           <div className="border-t pt-2 mt-2">
-            <div className="flex justify-between"><span className="text-gray-500">Total</span><span className="font-bold">{money(booking.subtotal)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Rental Subtotal</span><span className="font-semibold">{money(booking.subtotal)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Delivery Fee</span><span className="font-semibold">{booking.delivery_fee ? money(booking.delivery_fee) : "Free"}</span></div>
+            <div className="flex justify-between border-t pt-2 mt-1"><span className="text-gray-500">Total</span><span className="font-bold">{money(booking.subtotal + booking.delivery_fee)}</span></div>
             <div className="flex justify-between text-yellow-700"><span>{isPaid ? "Paid" : "Due Now"}</span><span className="font-bold">{money(booking.amount_charged || booking.deposit_due)}</span></div>
             <div className="flex justify-between text-gray-500"><span>Balance Due at Event</span><span className="font-semibold">{money(booking.balance_due)}</span></div>
           </div>
