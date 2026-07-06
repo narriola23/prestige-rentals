@@ -87,14 +87,15 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 
 ---
 
-## Current State (as of 7/3/2026)
+## Current State (as of 7/6/2026)
 
 ### What's done
 - Repo created with full Next.js 14 + Tailwind + Postgres scaffold
 - Render Blueprint deployed — web service and DB both running successfully
 - Database upgraded to Basic 256MB (no expiry)
-- Database migrated and seeded with 5 products + a starter `service_zip_codes` list (51 ZIPs across the 12 service-area cities — not exhaustive, expand as needed)
+- Database migrated and seeded with the **real 9-inflatable inventory** + tables/chairs + 5 add-ons, and an expanded `service_zip_codes` list (~99 ZIPs across the 12 service-area cities, up from the original 51-ZIP starter)
 - Availability-first booking flow built and tested end-to-end against the live DB (search → results → checkout → booking creation → admin), minus the live Stripe charge itself (no keys yet)
+- A real distance-based delivery fee (free ≤20mi from the business address, $2/mile beyond) is live, replacing the old flat ZIP-whitelist/no-fee model
 - Site is live at https://prestige-rentals.onrender.com
 
 ### Pages built ✅
@@ -109,13 +110,13 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
   - `app/policies/terms/page.tsx`
 - **Service areas** — index at `app/service-areas/page.tsx` + dynamic `app/service-areas/[city]/page.tsx` for all 12 cities (houston, katy, sugar-land, pearland, cypress, spring, the-woodlands, humble, conroe, tomball, jersey-village, klein). Each has unique metadata + LocalBusiness JSON-LD with areaServed.
 - **Category pages** (all 7):
-  - `app/rentals/bounce-houses/page.tsx` — fetches DB products (category: 'Bounce House')
-  - `app/rentals/water-slides/page.tsx` — fetches 'Water Slide' + 'Water Combo'
-  - `app/rentals/combo-units/page.tsx` — fetches 'Combo' + 'Water Combo'
-  - `app/rentals/obstacle-courses/page.tsx` — fetches 'Obstacle Course'
-  - `app/rentals/party-rentals/page.tsx` — call-to-inquire (no DB products yet)
-  - `app/rentals/tables-chairs/page.tsx` — call-to-inquire (no DB products yet)
-  - `app/rentals/concessions/page.tsx` — call-to-inquire (no DB products yet)
+  - `app/rentals/bounce-houses/page.tsx` — fetches DB products (category: 'Bounce House') — 6 real products live
+  - `app/rentals/water-slides/page.tsx` — fetches 'Water Slide' + 'Water Combo' — 3 real products live
+  - `app/rentals/tables-chairs/page.tsx` — fetches 'Tables & Chairs' — Tables + Chairs live, falls back to call-to-inquire if the query returns nothing
+  - `app/rentals/combo-units/page.tsx` — fetches 'Combo' + 'Water Combo' — **no real SKUs in this category**, shows the "inventory loading soon" fallback; tagline says "Call for current availability" instead of a price floor
+  - `app/rentals/obstacle-courses/page.tsx` — fetches 'Obstacle Course' — **no real SKUs**, same fallback treatment as combo-units
+  - `app/rentals/party-rentals/page.tsx` — call-to-inquire (no DB products)
+  - `app/rentals/concessions/page.tsx` — call-to-inquire (concessions live only as an add-on, not a product)
 - **Contact page** (`app/contact/page.tsx`) — phone (346) 244-3261, form wired to real API
 - **Contact API** (`app/api/contact/route.ts`) — Resend integration, graceful fallback if no API key
 - **Quote page** (`app/quote/page.tsx`) — standalone quote request form (name, email, phone, event date, event type, guest count, location, message), posts to `app/api/quote/route.ts` (same Resend pattern as contact, graceful fallback). Linked from Footer Quick Links, the homepage's custom-quote package CTA, and both `/availability` empty states (ZIP not serviceable / nothing available).
@@ -134,6 +135,14 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 - `getStripe()` still returns `null` gracefully if keys are ever missing/removed → checkout falls back to "payments aren't set up online yet, call us — your dates are reserved" → booking is still created and visible/manageable in `/admin/bookings` (`Mark Paid` action covers this manual-payment path).
 - **Still test mode, not live/real payments.** To accept real charges: switch the Stripe account out of the sandbox, generate live-mode keys, create a separate live-mode webhook endpoint for the same URL/events, swap the 3 Render env vars.
 
+### Real inventory + distance-based delivery fee (live as of 7/6/2026)
+- `db/seed.sql` deactivates the 5 original placeholder products (`is_active = false`, not deleted — keeps booking history/FKs intact) and upserts the real 9 inflatables (Marvel Adventures, The Astronaut, Single/Double Princess Waterslide, The Sun, The Sunny Slide, The Tropical, The Castle, The White Castle) + Tables + Chairs + 5 add-ons. Category is assigned by actual wet/dry type, not product name — e.g. "The Tropical" and "The Castle" are Dry → Bounce House.
+- `products` gained `wet_dry` and `special_requirements` columns; new `product_images` table (real photo galleries — 6 of 9 inflatables have real photos, in `public/images/products/<slug>/<n>.jpg`, committed to git after being resized via `scripts/process-product-images.js` using `sharp`); new `add_ons` table, shown informationally on product pages (not yet selectable at checkout).
+- The Sun, The Sunny Slide, and The White Castle have no real photos yet — `app/rentals/[slug]/page.tsx` falls back to a placeholder image for them.
+- `lib/zip-coordinates.ts` (static ZIP→lat/lng centroid table, geocoded once via the free `api.zippopotam.us` API, no key/account needed) + `lib/delivery-fee.ts` (`calculateDeliveryFee(zip)`, haversine straight-line distance from origin ZIP 77069 — free ≤20mi, $2/mile for the full distance beyond, matching the client's stated policy). This is a deliberate straight-line approximation, not driving distance, to avoid needing a paid Google Maps API/account.
+- Wired into `lib/bookings.ts` (`createBooking` stores `bookings.delivery_fee`), `app/api/checkout/create-payment-intent/route.ts` (charges `subtotal + delivery_fee` for full payment), `CheckoutForm.tsx`, `/checkout/confirmation`, `/admin/bookings`, and `/availability` (shows the fee for the searched ZIP before booking).
+- `service_zip_codes` expanded from the original 51-ZIP starter to ~99 ZIPs (additive — old list untouched) from the client's intake spreadsheet.
+
 ### Components updated
 - `components/Header.tsx` — added FAQ link; "Book Now" replaced with the availability widget (`compact` variant)
 - `components/Footer.tsx` — 4-column layout (Quick Links, Policies, Service Areas, Contact); "Book Online" now points to `/availability`
@@ -143,8 +152,11 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 - `app/admin/bookings/page.tsx` + `actions.tsx` — payment column now shows `payment_status`/`payment_type` badge instead of the old `deposit_paid` ✅/⏳; new `MarkPaymentPaid` action
 
 ### ⚠️ Known issues / watch items
-- Only 5 seed products in DB — real inventory not yet added
-- `service_zip_codes` has a starter list of 51 ZIPs, not a complete map of the delivery area — expand as needed
+- Combo-units and obstacle-courses category pages have zero real SKUs backing them now that the placeholders are deactivated — they show a graceful fallback, but there's no real inventory in those categories at all
+- The Sun, The Sunny Slide, and The White Castle have no real photos yet (placeholder fallback)
+- Add-ons are seeded and displayed on product pages, but aren't yet selectable/priced into the checkout flow itself — informational only for now
+- Delivery fee uses straight-line (haversine) ZIP-centroid distance, not real driving distance — a deliberate simplification, revisit if it proves inaccurate in practice
+- `service_zip_codes` now has ~99 ZIPs from the client's intake list — still not necessarily exhaustive of the real delivery radius
 - Resend sends from `onboarding@resend.dev` until custom domain verified
 - `NEXT_PUBLIC_BUSINESS_PHONE` env var (8327161836) is not yet used by all pages — contact page hardcodes (346) 244-3261 separately
 - Static route pages use `export const dynamic = "force-dynamic"` for DB fetches
@@ -168,20 +180,21 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 - LocalBusiness JSON-LD in `app/layout.tsx`
 - Product schema on individual product pages
 
-### 3. Real product inventory
-- Replace 5 seed products with real photos, descriptions, and prices
-- Add missing categories: Toddler, Party Rentals, Tables & Chairs, Concessions
-- Expand `service_zip_codes` beyond the 51-ZIP starter list to match actual delivery radius
-
-### 4. Resend custom domain (when domain is purchased)
+### 3. Resend custom domain (when domain is purchased)
 - Verify domain in Resend → update `from:` in `app/api/contact/route.ts`
 
-### 5. Switch Stripe to live mode (when ready to accept real payments)
+### 4. Switch Stripe to live mode (when ready to accept real payments)
 - See "Stripe" section above for exact steps
+
+### Later / not yet scheduled
+- Wire add-ons into the checkout flow itself (currently informational-only on product pages)
+- Consider a real driving-distance API (e.g. Google Distance Matrix) if the haversine delivery-fee approximation proves inaccurate
+- Source real photos for The Sun, The Sunny Slide, and The White Castle
+- Decide whether combo-units/obstacle-courses categories get real SKUs or should be removed from site navigation
 
 ---
 
 ## Update This Section After Every Session
-**Last updated:** 7/3/2026
-**Last thing completed:** Availability-first booking flow + Stripe test-mode setup merged and verified live (PR #12, #13). Quote request page (`/quote`) built — posts to `/api/quote` (Resend, graceful fallback), linked from Footer, homepage's custom-quote package CTA, and both `/availability` empty states.
+**Last updated:** 7/6/2026
+**Last thing completed:** Real inventory import (9 real inflatables + tables/chairs + 5 add-ons, real photo galleries, expanded ZIP list) and a real distance-based delivery fee (free ≤20mi, $2/mile beyond, haversine ZIP-centroid distance) — PR #16, merged and migrated live against production, verified end-to-end on the live site.
 **Next session should start at:** Party package pages (5 pages)
