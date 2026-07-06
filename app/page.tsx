@@ -35,20 +35,23 @@ const steps = [
 
 const packages = [
   {
+    slug: "backyard-birthday",
     icon: "🎂",
     name: "Backyard Birthday",
-    desc: "The classic Houston birthday setup. A bounce house or combo unit delivered to your door, set up before guests arrive, and picked up when the party's over.",
-    highlights: ["1 inflatable of your choice", "Free delivery & setup", "Up to 8 hours rental"],
-    price: "From $175",
+    desc: "The classic Houston birthday setup. A bounce house delivered to your door, set up before guests arrive, and picked up when the party's over.",
+    highlights: ["1 inflatable of your choice", "Free delivery within 20 miles", "Setup & pickup included"],
+    price: "From $100",
   },
   {
+    slug: "summer-water-slide",
     icon: "💧",
     name: "Summer Water Party",
-    desc: "Beat the Houston heat with a water slide or wet combo. Perfect for backyard summer birthdays and end-of-school parties.",
-    highlights: ["Water slide or wet combo", "Free delivery & setup", "Great for ages 4–14"],
-    price: "From $275",
+    desc: "Beat the Houston heat with a water slide or wet-capable combo. Perfect for backyard summer birthdays and end-of-school parties.",
+    highlights: ["Water slide or wet combo", "Free delivery within 20 miles", "Great for ages 4–14"],
+    price: "From $180",
   },
   {
+    slug: "school-church",
     icon: "🏫",
     name: "School & Church Events",
     desc: "Multi-unit setups for larger events. We work with schools, churches, daycares, and HOAs throughout Greater Houston.",
@@ -252,9 +255,15 @@ export default function HomePage() {
                   ) : (
                     <AvailabilitySearchWidget variant="compact" className="text-sm text-center block" />
                   )}
+                  <Link href={"/packages/" + pkg.slug} className="text-center text-sm font-semibold text-blue-950 underline underline-offset-4 mt-3">
+                    Learn More →
+                  </Link>
                 </div>
               </div>
             ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link href="/packages" className="btn-secondary inline-block">View All Packages →</Link>
           </div>
         </div>
       </section>
