@@ -143,6 +143,14 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 - Wired into `lib/bookings.ts` (`createBooking` stores `bookings.delivery_fee`), `app/api/checkout/create-payment-intent/route.ts` (charges `subtotal + delivery_fee` for full payment), `CheckoutForm.tsx`, `/checkout/confirmation`, `/admin/bookings`, and `/availability` (shows the fee for the searched ZIP before booking).
 - `service_zip_codes` expanded from the original 51-ZIP starter to ~99 ZIPs (additive — old list untouched) from the client's intake spreadsheet.
 
+### Party packages + SEO pass (live as of 7/6/2026)
+- `/packages` index + 5 package pages (`backyard-birthday`, `summer-water-slide`, `school-church`, `toddler`, `large-event`) — the first three pull real products from the DB (bounce houses, wet-capable units, and the 3 smallest-footprint units respectively); the last two are quote-driven with no single product mapping, and `large-event` also surfaces the `add_ons` table. Homepage's 3 featured package cards link to their pages; footer has a `/packages` Quick Link.
+- `app/sitemap.ts` — covers all static routes, all 12 service-area pages, all 5 package pages, and every active product (queried live from the DB).
+- `app/robots.ts` — disallows `/admin`, `/checkout`, `/api`; points at the sitemap.
+- Site-wide `LocalBusiness` JSON-LD in `app/layout.tsx` (no street address published, matching the existing city-page schema convention).
+- `app/rentals/[slug]/page.tsx` now has `generateMetadata` (previously had **no** per-product title/description — every product page silently inherited the generic site-wide title) plus `Product` JSON-LD with absolute image URLs and an `Offer`.
+- New `lib/site.ts` holds the site's base URL (`https://prestige-rentals.onrender.com`) as a single constant — update this when the custom domain lands. Note: `app/service-areas/[city]/page.tsx` still has its own separately-hardcoded copy of this URL in its own schema block, predates `lib/site.ts`, not yet refactored to use it.
+
 ### Components updated
 - `components/Header.tsx` — added FAQ link; "Book Now" replaced with the availability widget (`compact` variant)
 - `components/Footer.tsx` — 4-column layout (Quick Links, Policies, Service Areas, Contact); "Book Online" now points to `/availability`
@@ -166,24 +174,12 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 
 ## Next Steps (priority order)
 
-### 1. Party package pages (5 pages)
-- `/packages/backyard-birthday`
-- `/packages/summer-water-slide`
-- `/packages/school-church`
-- `/packages/toddler`
-- `/packages/large-event`
-- Each: hero, what's included list, pricing, CTA to book/call
+### 1. Buy a custom domain (unlocks both items below)
+One domain purchase (~$10–20/year for a `.com`; Cloudflare Registrar or Namecheap sell at/near cost, avoid GoDaddy's renewal pricing) serves two separate purposes — worth keeping distinct:
+- **Website domain** (e.g. `prestigerentalshouston.com` → Render) — this is the actual SEO-relevant piece. Point it at Render (Dashboard → service → Settings → Custom Domains, free on any plan including the free tier, auto-provisions SSL), then update `lib/site.ts`'s `SITE_URL` and the separate hardcoded URL in `app/service-areas/[city]/page.tsx`. Since the site is already indexed under `onrender.com`, use Search Console's "Change of Address" tool and/or a 301 redirect when switching, so accumulated ranking signal isn't lost/split across two domains.
+- **Resend custom email domain** — affects deliverability/trust, not search rankings. Verify the same domain in Resend (Dashboard → Domains, free, just DNS TXT records), then update `from:` in `app/api/contact/route.ts` and `app/api/quote/route.ts` away from `onboarding@resend.dev`.
 
-### 2. SEO pass
-- `app/sitemap.ts` — auto-generated sitemap including all service area + category pages (add `/availability`, `/quote`; `/checkout` should stay unindexed)
-- `app/robots.ts` — robots.txt
-- LocalBusiness JSON-LD in `app/layout.tsx`
-- Product schema on individual product pages
-
-### 3. Resend custom domain (when domain is purchased)
-- Verify domain in Resend → update `from:` in `app/api/contact/route.ts`
-
-### 4. Switch Stripe to live mode (when ready to accept real payments)
+### 2. Switch Stripe to live mode (when ready to accept real payments)
 - See "Stripe" section above for exact steps
 
 ### Later / not yet scheduled
@@ -196,5 +192,5 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 
 ## Update This Section After Every Session
 **Last updated:** 7/6/2026
-**Last thing completed:** Real inventory import (9 real inflatables + tables/chairs + 5 add-ons, real photo galleries, expanded ZIP list) and a real distance-based delivery fee (free ≤20mi, $2/mile beyond, haversine ZIP-centroid distance) — PR #16, merged and migrated live against production, verified end-to-end on the live site.
-**Next session should start at:** Party package pages (5 pages)
+**Last thing completed:** Party package pages (`/packages` + 5 pages) and the SEO pass (sitemap, robots.txt, LocalBusiness + Product schema, per-product page titles) — PRs #17/#18/#19, merged and verified live on production alongside the real-inventory/delivery-fee work from PR #16.
+**Next session should start at:** Buying a custom domain (see "Next Steps" #1) — everything else on CLAUDE.md's original build backlog is now live. After that: Stripe live mode when the client is ready to accept real payments.
