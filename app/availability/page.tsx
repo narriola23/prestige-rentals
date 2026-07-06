@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 import type { Product } from "@/lib/products";
+import { calculateDeliveryFee } from "@/lib/delivery-fee";
 
 export const dynamic = "force-dynamic";
 
@@ -46,6 +47,8 @@ export default async function AvailabilityPage({ searchParams }: { searchParams:
     serviceable = result.serviceable;
     products = result.products;
   }
+
+  const deliveryFee = hasFullSearch && serviceable && zip ? calculateDeliveryFee(zip) : null;
 
   const pinnedProduct = presetProduct ? products.find((p) => p.slug === presetProduct) : undefined;
   const restProducts = pinnedProduct ? products.filter((p) => p.slug !== presetProduct) : products;
@@ -126,6 +129,16 @@ export default async function AvailabilityPage({ searchParams }: { searchParams:
               <a href="sms:+18327161836" className="btn-primary inline-block">💬 Text Us</a>
               <Link href="/quote" className="btn-secondary inline-block">Get a Quote</Link>
             </div>
+          </div>
+        )}
+
+        {hasFullSearch && serviceable && deliveryFee && (
+          <div className="max-w-xl mx-auto text-center -mt-6">
+            <span className={"inline-block text-sm font-semibold px-4 py-2 rounded-full " + (deliveryFee.feeCents > 0 ? "bg-blue-50 text-blue-800 border border-blue-100" : "bg-green-50 text-green-800 border border-green-100")}>
+              {deliveryFee.feeCents > 0
+                ? "🚚 Delivery to " + zip + ": $" + (deliveryFee.feeCents / 100).toFixed(2)
+                : "🚚 Free delivery to " + zip}
+            </span>
           </div>
         )}
 

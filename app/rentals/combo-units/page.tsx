@@ -52,7 +52,7 @@ export default async function ComboUnitsPage() {
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           Get the most out of your rental — bounce, slide, and climb in one unit. Available as dry combos or water combos for summer parties.
         </p>
-        <p className="text-yellow-400 font-bold mt-3">Starting at $225/day · Free delivery &amp; setup</p>
+        <p className="text-yellow-400 font-bold mt-3">Call for current availability · Free delivery within 20 miles</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

@@ -52,7 +52,7 @@ export default async function ObstacleCoursesPage() {
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           Tunnels, climbing walls, pop-up obstacles, and a giant finish slide. The ultimate challenge for kids who need more than just a bounce house.
         </p>
-        <p className="text-yellow-400 font-bold mt-3">Starting at $349/day · Free delivery &amp; setup</p>
+        <p className="text-yellow-400 font-bold mt-3">Call for current availability · Free delivery within 20 miles</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

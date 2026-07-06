@@ -11,14 +11,29 @@ async function getProduct(slug: string) {
   } catch { return null; }
 }
 
+async function getGallery(productId: number, fallbackUrl: string | null, slug: string) {
+  try {
+    const { getProductImages } = await import('@/lib/products');
+    const images = await getProductImages(productId);
+    if (images.length > 0) return images.map((img) => img.image_url);
+  } catch { /* fall through to placeholder */ }
+  return [fallbackUrl || ("https://picsum.photos/seed/" + slug + "/800/500")];
+}
+
+async function getAddOns() {
+  try {
+    const { getActiveAddOns } = await import('@/lib/products');
+    return await getActiveAddOns();
+  } catch { return []; }
+}
+
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
   const product = await getProduct(params.slug);
   if (!product) { notFound(); }
-  const gallery = [
-    product.image_url || ("https://picsum.photos/seed/" + product.slug + "/800/500"),
-    ("https://picsum.photos/seed/" + product.slug + "b/800/500"),
-    ("https://picsum.photos/seed/" + product.slug + "c/800/500"),
-  ];
+  const [gallery, addOns] = await Promise.all([
+    getGallery(product.id, product.image_url, product.slug),
+    getAddOns(),
+  ]);
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -32,18 +47,26 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
             <div className="rounded-2xl overflow-hidden shadow-lg mb-4 h-80">
               <img src={gallery[0]} alt={product.name} className="w-full h-full object-cover" />
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              {gallery.slice(1).map((img, i) => (
-                <div key={i} className="rounded-xl overflow-hidden h-24 shadow">
-                  <img src={img} alt={product.name} className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
+            {gallery.length > 1 && (
+              <div className="grid grid-cols-3 gap-3">
+                {gallery.slice(1).map((img, i) => (
+                  <div key={i} className="rounded-xl overflow-hidden h-24 shadow">
+                    <img src={img} alt={product.name} className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div>
-            {product.category && <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">{product.category}</span>}
+            <div className="flex flex-wrap gap-2">
+              {product.category && <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">{product.category}</span>}
+              {product.wet_dry && <span className="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">{product.wet_dry === "Both" ? "Wet or Dry" : product.wet_dry}</span>}
+            </div>
             <h1 className="text-3xl sm:text-4xl font-black text-blue-950 mt-3 mb-4">{product.name}</h1>
             <p className="text-gray-600 leading-relaxed mb-6">{product.description}</p>
+            {product.special_requirements && (
+              <p className="text-xs text-gray-500 mb-6 -mt-4">⚠️ {product.special_requirements}</p>
+            )}
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-6">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-600 font-medium">Daily Rental Rate</span>
@@ -66,6 +89,23 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
             </div>
             <AvailabilitySearchWidget presetProductSlug={product.slug} />
             <p className="text-center text-xs text-gray-400 mt-3">✅ No charge until confirmed • Free cancellation 48hrs prior</p>
+            {addOns.length > 0 && (
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <h2 className="font-bold text-blue-950 mb-3">Popular Add-Ons</h2>
+                <p className="text-xs text-gray-500 mb-3">Ask about adding any of these when you call or message us to book.</p>
+                <ul className="space-y-2">
+                  {addOns.map((a) => (
+                    <li key={a.id} className="flex justify-between items-center text-sm bg-white rounded-lg border border-gray-200 px-4 py-2">
+                      <div>
+                        <span className="font-semibold text-blue-950">{a.name}</span>
+                        {a.description && <span className="text-gray-500"> — {a.description}</span>}
+                      </div>
+                      <span className="font-bold text-blue-700">{"+$" + (a.price / 100).toFixed(0)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

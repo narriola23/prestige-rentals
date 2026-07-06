@@ -16,7 +16,24 @@ export interface Product {
   length_ft: number;
   width_ft: number;
   height_ft: number;
+  wet_dry: string | null;
+  special_requirements: string | null;
   created_at: string;
+}
+
+export interface ProductImage {
+  id: number;
+  product_id: number;
+  image_url: string;
+  sort_order: number;
+}
+
+export interface AddOn {
+  id: number;
+  name: string;
+  price: number;
+  description: string | null;
+  is_active: boolean;
 }
 
 export async function getActiveProducts(): Promise<Product[]> {
@@ -47,4 +64,15 @@ export async function updateProduct(id: number, data: Partial<Product>): Promise
     'UPDATE products SET ' + setClause + ' WHERE id = $' + (fields.length + 1) + ' RETURNING *',
     [...values, id]
   );
+}
+
+export async function getProductImages(productId: number): Promise<ProductImage[]> {
+  return query<ProductImage>(
+    'SELECT * FROM product_images WHERE product_id = $1 ORDER BY sort_order ASC',
+    [productId]
+  );
+}
+
+export async function getActiveAddOns(): Promise<AddOn[]> {
+  return query<AddOn>('SELECT * FROM add_ons WHERE is_active = true ORDER BY price ASC');
 }

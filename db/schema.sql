@@ -92,3 +92,28 @@ ALTER TABLE bookings ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ;
 CREATE UNIQUE INDEX IF NOT EXISTS bookings_stripe_pi_idx ON bookings (stripe_payment_intent_id)
   WHERE stripe_payment_intent_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS bookings_status_created_idx ON bookings (status, created_at);
+
+-- Real inventory import: extra product attributes, real photo galleries,
+-- add-ons, and a real distance-based delivery fee (replacing flat $0 fee).
+ALTER TABLE products ADD COLUMN IF NOT EXISTS wet_dry VARCHAR(10);
+ALTER TABLE products ADD COLUMN IF NOT EXISTS special_requirements TEXT;
+
+CREATE TABLE IF NOT EXISTS product_images (
+  id         SERIAL PRIMARY KEY,
+  product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  image_url  TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS product_images_product_id_idx ON product_images (product_id, sort_order);
+
+CREATE TABLE IF NOT EXISTS add_ons (
+  id          SERIAL PRIMARY KEY,
+  name        VARCHAR(255) NOT NULL UNIQUE,
+  price       INTEGER NOT NULL,
+  description TEXT,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE bookings ADD COLUMN IF NOT EXISTS delivery_fee INTEGER NOT NULL DEFAULT 0;

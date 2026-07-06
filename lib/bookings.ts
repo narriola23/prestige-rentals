@@ -1,4 +1,5 @@
 import { query, queryOne } from './db';
+import { calculateDeliveryFee } from './delivery-fee';
 
 // Legacy single-date check, superseded by checkDateRangeAvailability in
 // lib/availability.ts. Left in place — only the retired app/book flow uses it.
@@ -43,18 +44,19 @@ export async function createBooking(data: {
   const numDays = numberOfDays(data.startDate, data.endDate);
   const subtotal = product.base_price * numDays;
   const depositDue = product.deposit_amount;
-  const balanceDue = data.paymentType === 'full' ? 0 : subtotal - depositDue;
+  const deliveryFee = calculateDeliveryFee(data.zipCode)?.feeCents ?? 0;
+  const balanceDue = data.paymentType === 'full' ? 0 : subtotal + deliveryFee - depositDue;
   const bookingNumber = 'PR-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 5).toUpperCase();
   const rows = await query<{ id: number }>(
     `INSERT INTO bookings (
       booking_number, customer_id, product_id, event_date, end_date, start_time, end_time,
-      delivery_address, city, state, zip_code, status, subtotal, deposit_due, balance_due, notes, payment_type
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+      delivery_address, city, state, zip_code, status, subtotal, deposit_due, balance_due, notes, payment_type, delivery_fee
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
     RETURNING id`,
     [
       bookingNumber, customer!.id, data.productId, data.startDate, data.endDate, data.startTime, data.endTime,
       data.deliveryAddress, data.city, data.state, data.zipCode, 'pending_payment', subtotal, depositDue, balanceDue,
-      data.notes || '', data.paymentType,
+      data.notes || '', data.paymentType, deliveryFee,
     ]
   );
   return { bookingId: rows[0].id, bookingNumber };
