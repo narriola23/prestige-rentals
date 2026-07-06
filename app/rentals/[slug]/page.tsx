@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
+import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +11,15 @@ async function getProduct(slug: string) {
     const { getProductBySlug } = await import('@/lib/products');
     return await getProductBySlug(slug);
   } catch { return null; }
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const product = await getProduct(params.slug);
+  if (!product) return {};
+  return {
+    title: `${product.name} Rental in Houston, TX | Prestige Rentals`,
+    description: `Rent ${product.name} in Houston, TX — $${(product.base_price / 100).toFixed(0)}/day. ${product.description || ""} Free delivery within 20 miles, setup and pickup included.`.trim(),
+  };
 }
 
 async function getGallery(productId: number, fallbackUrl: string | null, slug: string) {
@@ -34,8 +45,29 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
     getGallery(product.id, product.image_url, product.slug),
     getAddOns(),
   ]);
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description || undefined,
+    image: gallery.map((img) => (img.startsWith("/") ? SITE_URL + img : img)),
+    category: product.category || undefined,
+    offers: {
+      "@type": "Offer",
+      url: SITE_URL + "/rentals/" + product.slug,
+      priceCurrency: "USD",
+      price: (product.base_price / 100).toFixed(2),
+      availability: "https://schema.org/InStock",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <nav className="text-sm text-gray-500 mb-6">
           <Link href="/" className="hover:text-yellow-600">Home</Link> {" / "}
