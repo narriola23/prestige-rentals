@@ -137,8 +137,8 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 
 ### Real inventory + distance-based delivery fee (live as of 7/6/2026)
 - `db/seed.sql` deactivates the 5 original placeholder products (`is_active = false`, not deleted — keeps booking history/FKs intact) and upserts the real 9 inflatables (Marvel Adventures, The Astronaut, Single/Double Princess Waterslide, The Sun, The Sunny Slide, The Tropical, The Castle, The White Castle) + Tables + Chairs + 5 add-ons. Category is assigned by actual wet/dry type, not product name — e.g. "The Tropical" and "The Castle" are Dry → Bounce House.
-- `products` gained `wet_dry` and `special_requirements` columns; new `product_images` table (real photo galleries — 6 of 9 inflatables have real photos, in `public/images/products/<slug>/<n>.jpg`, committed to git after being resized via `scripts/process-product-images.js` using `sharp`); new `add_ons` table, shown informationally on product pages (not yet selectable at checkout).
-- The Sun, The Sunny Slide, and The White Castle have no real photos yet — `app/rentals/[slug]/page.tsx` falls back to a placeholder image for them.
+- `products` gained `wet_dry` and `special_requirements` columns; new `product_images` table (real photo galleries — 8 of 9 inflatables have real photos, in `public/images/products/<slug>/<n>.jpg`, committed to git after being resized via `scripts/process-product-images.js` using `sharp`); new `add_ons` table, shown informationally on product pages (not yet selectable at checkout).
+- The White Castle has no real photos yet — `app/rentals/[slug]/page.tsx` falls back to a placeholder image for it. (The Sun and The Sunny Slide got real photos on 7/9/2026.)
 - `lib/zip-coordinates.ts` (static ZIP→lat/lng centroid table, geocoded once via the free `api.zippopotam.us` API, no key/account needed) + `lib/delivery-fee.ts` (`calculateDeliveryFee(zip)`, haversine straight-line distance from origin ZIP 77069 — free ≤20mi, $2/mile for the full distance beyond, matching the client's stated policy). This is a deliberate straight-line approximation, not driving distance, to avoid needing a paid Google Maps API/account.
 - Wired into `lib/bookings.ts` (`createBooking` stores `bookings.delivery_fee`), `app/api/checkout/create-payment-intent/route.ts` (charges `subtotal + delivery_fee` for full payment), `CheckoutForm.tsx`, `/checkout/confirmation`, `/admin/bookings`, and `/availability` (shows the fee for the searched ZIP before booking).
 - `service_zip_codes` expanded from the original 51-ZIP starter to ~99 ZIPs (additive — old list untouched) from the client's intake spreadsheet.
@@ -161,7 +161,7 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 
 ### ⚠️ Known issues / watch items
 - Combo-units and obstacle-courses category pages have zero real SKUs backing them now that the placeholders are deactivated — they show a graceful fallback, but there's no real inventory in those categories at all
-- The Sun, The Sunny Slide, and The White Castle have no real photos yet (placeholder fallback)
+- The White Castle has no real photos yet (placeholder fallback)
 - Add-ons are seeded and displayed on product pages, but aren't yet selectable/priced into the checkout flow itself — informational only for now
 - Delivery fee uses straight-line (haversine) ZIP-centroid distance, not real driving distance — a deliberate simplification, revisit if it proves inaccurate in practice
 - `service_zip_codes` now has ~99 ZIPs from the client's intake list — still not necessarily exhaustive of the real delivery radius
@@ -185,12 +185,12 @@ One domain purchase (~$10–20/year for a `.com`; Cloudflare Registrar or Namech
 ### Later / not yet scheduled
 - Wire add-ons into the checkout flow itself (currently informational-only on product pages)
 - Consider a real driving-distance API (e.g. Google Distance Matrix) if the haversine delivery-fee approximation proves inaccurate
-- Source real photos for The Sun, The Sunny Slide, and The White Castle
+- Source real photos for The White Castle
 - Decide whether combo-units/obstacle-courses categories get real SKUs or should be removed from site navigation
 
 ---
 
 ## Update This Section After Every Session
-**Last updated:** 7/6/2026
-**Last thing completed:** Party package pages (`/packages` + 5 pages) and the SEO pass (sitemap, robots.txt, LocalBusiness + Product schema, per-product page titles) — PRs #17/#18/#19, merged and verified live on production alongside the real-inventory/delivery-fee work from PR #16.
+**Last updated:** 7/9/2026
+**Last thing completed:** Real photos for The Sun and The Sunny Slide (processed from `Bouce House Pics/` via `scripts/process-product-images.js`, seeded into `products.image_url` + `product_images`). Before that: party package pages + SEO pass (PRs #17/#18/#19) and real inventory/delivery fee (PR #16), all live on production.
 **Next session should start at:** Buying a custom domain (see "Next Steps" #1) — everything else on CLAUDE.md's original build backlog is now live. After that: Stripe live mode when the client is ready to accept real payments.

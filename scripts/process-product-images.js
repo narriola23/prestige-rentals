@@ -38,6 +38,8 @@ const MAPPING = {
   ],
   'the-castle': ['The Castle.JPEG'],
   'the-tropical': ['The Tropical.JPEG'],
+  'the-sun': ['The Sun.JPEG'],
+  'the-sunny-slide': ['The Sunny Slide.JPEG'],
 };
 
 async function run() {
