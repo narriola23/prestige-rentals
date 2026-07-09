@@ -5,7 +5,7 @@ import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 export const metadata: Metadata = {
   title: "Service Areas | Bounce House Rentals Across Greater Houston",
   description:
-    "Prestige Rentals delivers bounce houses and inflatables across Greater Houston including Katy, Sugar Land, The Woodlands, Pearland, Cypress, Spring, and more. Free delivery within 20 miles, setup included.",
+    "Prestige Rentals delivers bounce houses and inflatables across Greater Houston including Katy, Sugar Land, The Woodlands, Pearland, Cypress, Spring, and more. Setup and pickup included with every rental.",
 };
 
 const cities = [
@@ -29,7 +29,7 @@ export default function ServiceAreasPage() {
       <section className="bg-blue-950 text-white py-14 text-center">
         <h1 className="text-4xl font-black mb-3">Service Areas</h1>
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-          Prestige Rentals delivers premium bounce houses and inflatables across Greater Houston. Free delivery within 20 miles of our Houston base, and professional setup included with every rental.
+          Prestige Rentals delivers premium bounce houses and inflatables across Greater Houston. Professional setup and pickup included with every rental.
         </p>
       </section>
 

@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Toddler Party Package | Prestige Rentals Houston",
   description:
-    "Compact, gentle bounce houses sized right for toddlers and first birthdays. Starting at $100/day, free delivery within 20 miles.",
+    "Compact, gentle bounce houses sized right for toddlers and first birthdays. Starting at $100/day, setup and pickup included.",
 };
 
 async function getToddlerFriendlyUnits() {
@@ -27,7 +27,7 @@ async function getToddlerFriendlyUnits() {
 
 const included = [
   { icon: "🍼", title: "Compact & Gentle", desc: "Smaller footprint units sized for toddlers, ages 1–5." },
-  { icon: "🚚", title: "Delivery & Setup", desc: "Free within 20 miles of our Houston base; a small per-mile fee applies beyond that." },
+  { icon: "🚚", title: "Delivery & Setup", desc: "We load, deliver, set up, and pick up — delivery quoted at checkout." },
   { icon: "✅", title: "Safety Inspection", desc: "Every unit is inspected on-site before we leave your property." },
   { icon: "📦", title: "Pickup Included", desc: "We return at the end of your rental window and break everything down." },
 ];
@@ -45,7 +45,7 @@ export default async function ToddlerPackagePage() {
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           First birthdays and toddler playdates need something sized right for little ones. Our smallest, gentlest units are the perfect fit.
         </p>
-        <p className="text-yellow-400 font-bold mt-3">Starting at $100/day · Free delivery within 20 miles</p>
+        <p className="text-yellow-400 font-bold mt-3">Starting at $100/day · Setup &amp; pickup included</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

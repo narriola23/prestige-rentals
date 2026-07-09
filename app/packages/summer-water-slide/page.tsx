@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Summer Water Party Package | Prestige Rentals Houston",
   description:
-    "Beat the Houston heat with a water slide or wet-capable inflatable. Starting at $180/day, free delivery within 20 miles.",
+    "Beat the Houston heat with a water slide or wet-capable inflatable. Starting at $180/day, setup and pickup included.",
 };
 
 async function getWaterUnits() {
@@ -22,7 +22,7 @@ async function getWaterUnits() {
 
 const included = [
   { icon: "💧", title: "Water Slide or Wet Combo", desc: "A water-capable unit connects to a standard garden hose for all-day splashing." },
-  { icon: "🚚", title: "Delivery & Setup", desc: "Free within 20 miles of our Houston base; a small per-mile fee applies beyond that." },
+  { icon: "🚚", title: "Delivery & Setup", desc: "We load, deliver, set up, and pick up — delivery quoted at checkout." },
   { icon: "✅", title: "Safety Inspection", desc: "Every unit is inspected on-site before we leave your property." },
   { icon: "📦", title: "Pickup Included", desc: "We return at the end of your rental window and break everything down." },
 ];
@@ -40,7 +40,7 @@ export default async function SummerWaterSlidePage() {
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           Beat the Houston heat with a water slide or wet-capable combo unit. Perfect for backyard summer birthdays and end-of-school parties.
         </p>
-        <p className="text-yellow-400 font-bold mt-3">Starting at $180/day · Free delivery within 20 miles</p>
+        <p className="text-yellow-400 font-bold mt-3">Starting at $180/day · Setup &amp; pickup included</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

@@ -17,7 +17,6 @@ interface CheckoutFormProps {
   product: CheckoutProduct;
   startDate: string;
   endDate: string;
-  zip: string;
 }
 
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -69,7 +68,7 @@ function PaymentStep({ clientSecret, bookingNumber, onFallback }: { clientSecret
   );
 }
 
-export default function CheckoutForm({ product, startDate, endDate, zip }: CheckoutFormProps) {
+export default function CheckoutForm({ product, startDate, endDate }: CheckoutFormProps) {
   const router = useRouter();
   const days = numDays(startDate, endDate);
   const subtotal = product.base_price * days;
@@ -88,7 +87,7 @@ export default function CheckoutForm({ product, startDate, endDate, zip }: Check
     email: "",
     deliveryAddress: "",
     city: "",
-    zipCode: zip,
+    zipCode: "",
     notes: "",
     paymentType: "deposit" as "deposit" | "full",
   });
@@ -145,7 +144,8 @@ export default function CheckoutForm({ product, startDate, endDate, zip }: Check
 
   const ic = "w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition";
   const lc = "block text-sm font-semibold text-blue-950 mb-1";
-  const deliveryFee = calculateDeliveryFee(form.zipCode)?.feeCents ?? 0;
+  const deliveryFeeResult = calculateDeliveryFee(form.zipCode);
+  const deliveryFee = deliveryFeeResult?.feeCents ?? 0;
   const total = subtotal + deliveryFee;
   const amountDue = form.paymentType === "full" ? total : deposit;
 
@@ -230,7 +230,7 @@ export default function CheckoutForm({ product, startDate, endDate, zip }: Check
               <h2 className="text-xl font-black text-blue-950 mb-4">Choose Your Payment Option</h2>
               <div className="bg-gray-50 rounded-xl p-5 space-y-2 text-sm mb-2">
                 <div className="flex justify-between"><span className="text-gray-500 font-medium">Rental Total ({days} day{days > 1 ? "s" : ""})</span><span className="font-bold">{money(subtotal)}</span></div>
-                <div className="flex justify-between"><span className="text-gray-500 font-medium">Delivery Fee</span><span className="font-bold">{deliveryFee > 0 ? money(deliveryFee) : "Free"}</span></div>
+                <div className="flex justify-between"><span className="text-gray-500 font-medium">Delivery Fee</span><span className="font-bold">{deliveryFeeResult ? (deliveryFee > 0 ? money(deliveryFee) : "Free") : "Confirmed after booking"}</span></div>
                 <div className="flex justify-between border-t pt-2"><span className="text-gray-500 font-medium">Total</span><span className="font-bold">{money(total)}</span></div>
               </div>
               <div className="space-y-3">

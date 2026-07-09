@@ -9,6 +9,20 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+/* iOS Safari gives date inputs an intrinsic width and ignores width:100%
+   inside grid/flex columns, making them overflow their container. */
+input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 3.25rem;
+  background-color: #fff;
+}
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
 .btn-primary {
   @apply bg-yellow-500 hover:bg-yellow-600 text-blue-950 font-bold px-6 py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
 }

@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     const serviceable = await isZipServiceable(zipCode);
     if (!serviceable) {
-      return NextResponse.json({ error: "We don't currently deliver to that ZIP code." }, { status: 409 });
+      return NextResponse.json({ error: "We don't currently deliver to that ZIP code — request a quote or text us and we may still be able to help." }, { status: 409 });
     }
 
     const available = await checkDateRangeAvailability(Number(productId), startDate, endDate);

@@ -4,7 +4,6 @@ import type { Product } from './products';
 export interface AvailabilityQuery {
   startDate: string;
   endDate: string;
-  zip: string;
 }
 
 const PENDING_PAYMENT_TTL_INTERVAL = "30 minutes";
@@ -43,9 +42,6 @@ export async function checkDateRangeAvailability(
 }
 
 export async function getAvailableProducts(q: AvailabilityQuery): Promise<Product[]> {
-  const serviceable = await isZipServiceable(q.zip);
-  if (!serviceable) return [];
-
   return query<Product>(
     `SELECT p.* FROM products p
      WHERE p.is_active = true

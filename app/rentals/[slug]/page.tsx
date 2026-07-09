@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   if (!product) return {};
   return {
     title: `${product.name} Rental in Houston, TX | Prestige Rentals`,
-    description: `Rent ${product.name} in Houston, TX — $${(product.base_price / 100).toFixed(0)}/day. ${product.description || ""} Free delivery within 20 miles, setup and pickup included.`.trim(),
+    description: `Rent ${product.name} in Houston, TX — $${(product.base_price / 100).toFixed(0)}/day. ${product.description || ""} Setup and pickup included.`.trim(),
   };
 }
 

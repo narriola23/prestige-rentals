@@ -7,7 +7,6 @@ interface AvailabilitySearchWidgetProps {
   presetProductSlug?: string;
   presetStart?: string;
   presetEnd?: string;
-  presetZip?: string;
   variant?: "full" | "compact";
   className?: string;
   onClick?: () => void;
@@ -17,7 +16,6 @@ export default function AvailabilitySearchWidget({
   presetProductSlug,
   presetStart,
   presetEnd,
-  presetZip,
   variant = "full",
   className = "",
   onClick,
@@ -27,7 +25,6 @@ export default function AvailabilitySearchWidget({
 
   const [start, setStart] = useState(presetStart || "");
   const [end, setEnd] = useState(presetEnd || "");
-  const [zip, setZip] = useState(presetZip || "");
   const [error, setError] = useState("");
 
   if (variant === "compact") {
@@ -40,19 +37,14 @@ export default function AvailabilitySearchWidget({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!start || !zip) {
-      setError("Please enter a date and your delivery ZIP code.");
-      return;
-    }
-    if (!/^\d{5}$/.test(zip)) {
-      setError("Please enter a valid 5-digit ZIP code.");
+    if (!start) {
+      setError("Please enter your event date.");
       return;
     }
     setError("");
     const params = new URLSearchParams({
       start,
       end: end || start,
-      zip,
     });
     if (presetProductSlug) params.set("product", presetProductSlug);
     router.push("/availability?" + params.toString());
@@ -63,8 +55,8 @@ export default function AvailabilitySearchWidget({
 
   return (
     <form onSubmit={handleSubmit} className={"bg-white rounded-2xl shadow-lg p-5 sm:p-6 " + className}>
-      <div className="grid sm:grid-cols-3 gap-3">
-        <div>
+      <div className="grid sm:grid-cols-2 gap-3">
+        <div className="min-w-0">
           <label className={lc + " text-blue-950"}>Start Date</label>
           <input
             type="date"
@@ -78,7 +70,7 @@ export default function AvailabilitySearchWidget({
             required
           />
         </div>
-        <div>
+        <div className="min-w-0">
           <label className={lc + " text-blue-950"}>End Date</label>
           <input
             type="date"
@@ -87,19 +79,6 @@ export default function AvailabilitySearchWidget({
             placeholder="Same day"
             onChange={(e) => setEnd(e.target.value)}
             className={ic}
-          />
-        </div>
-        <div>
-          <label className={lc + " text-blue-950"}>Delivery ZIP</label>
-          <input
-            type="text"
-            inputMode="numeric"
-            placeholder="77001"
-            maxLength={5}
-            value={zip}
-            onChange={(e) => setZip(e.target.value.replace(/\D/g, ""))}
-            className={ic}
-            required
           />
         </div>
       </div>
