@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Backyard Birthday Party Package | Prestige Rentals Houston",
   description:
-    "The classic Houston backyard birthday setup — a bounce house delivered, set up, and picked up. Starting at $100/day, free delivery within 20 miles.",
+    "The classic Houston backyard birthday setup — a bounce house delivered, set up, and picked up. Starting at $100/day, setup and pickup included.",
 };
 
 async function getBounceHouses() {
@@ -21,7 +21,7 @@ async function getBounceHouses() {
 
 const included = [
   { icon: "🏰", title: "1 Inflatable of Your Choice", desc: "Pick any bounce house from our lineup — themed castles, superhero units, and more." },
-  { icon: "🚚", title: "Delivery & Setup", desc: "Free within 20 miles of our Houston base; a small per-mile fee applies beyond that." },
+  { icon: "🚚", title: "Delivery & Setup", desc: "We load, deliver, set up, and pick up — delivery quoted at checkout." },
   { icon: "✅", title: "Safety Inspection", desc: "Every unit is inspected on-site before we leave your property." },
   { icon: "📦", title: "Pickup Included", desc: "We return at the end of your rental window and break everything down." },
 ];
@@ -39,7 +39,7 @@ export default async function BackyardBirthdayPage() {
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           The classic Houston birthday setup. A bounce house delivered to your door, set up before guests arrive, and picked up when the party's over.
         </p>
-        <p className="text-yellow-400 font-bold mt-3">Starting at $100/day · Free delivery within 20 miles</p>
+        <p className="text-yellow-400 font-bold mt-3">Starting at $100/day · Setup &amp; pickup included</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

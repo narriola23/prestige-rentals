@@ -31,7 +31,7 @@ const faqs = [
     items: [
       {
         q: "How much does it cost to rent a bounce house in Houston?",
-        a: "Our bounce houses range from $100–$255/day, and our water slides range from $180–$195/day. Every rental includes setup and pickup. Delivery is free within 20 miles of our Houston base, with a small per-mile fee beyond that. View full pricing on the Inflatables page.",
+        a: "Our bounce houses range from $100–$255/day, and our water slides range from $180–$195/day. Every rental includes setup and pickup. Delivery is quoted at checkout based on your delivery address. View full pricing on the Inflatables page.",
       },
       {
         q: "Is a deposit required to hold my date?",
@@ -52,7 +52,7 @@ const faqs = [
       },
       {
         q: "What areas do you serve?",
-        a: "We serve Houston and the surrounding communities including Katy, Sugar Land, The Woodlands, Cypress, Spring, Humble, Tomball, Pearland, Conroe, Jersey Village, Klein, and more. Delivery is free within 20 miles of our Houston base; a $2/mile fee applies beyond that, shown at checkout before you book. Not sure if we cover your address? Call us — we're happy to check.",
+        a: "We serve Houston and the surrounding communities including Katy, Sugar Land, The Woodlands, Cypress, Spring, Humble, Tomball, Pearland, Conroe, Jersey Village, Klein, and more. Delivery is quoted at checkout based on your delivery address, before you pay. Not sure if we cover your address? Call us — we're happy to check.",
       },
       {
         q: "What do I need to prepare before delivery?",

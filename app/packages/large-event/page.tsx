@@ -43,7 +43,7 @@ export default async function LargeEventPackagePage() {
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           Block parties, corporate events, and festivals — multiple units plus the add-ons that make a bigger event run smoothly.
         </p>
-        <p className="text-yellow-400 font-bold mt-3">Custom quote · Free delivery within 20 miles</p>
+        <p className="text-yellow-400 font-bold mt-3">Custom quote · Setup &amp; pickup included</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

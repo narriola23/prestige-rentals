@@ -1,27 +1,22 @@
 import Link from "next/link";
 import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 import type { Product } from "@/lib/products";
-import { calculateDeliveryFee } from "@/lib/delivery-fee";
 
 export const dynamic = "force-dynamic";
 
 interface SearchParams {
   start?: string;
   end?: string;
-  zip?: string;
   product?: string;
 }
 
-async function getResults(start: string, end: string, zip: string) {
+async function getResults(start: string, end: string) {
   try {
-    const { isZipServiceable, getAvailableProducts } = await import("@/lib/availability");
-    const serviceable = await isZipServiceable(zip);
-    if (!serviceable) return { serviceable: false as const, products: [] as Product[] };
-    const products = await getAvailableProducts({ startDate: start, endDate: end, zip });
-    return { serviceable: true as const, products };
+    const { getAvailableProducts } = await import("@/lib/availability");
+    return await getAvailableProducts({ startDate: start, endDate: end });
   } catch (error) {
     console.error("Availability lookup error:", error);
-    return { serviceable: true as const, products: [] as Product[] };
+    return [] as Product[];
   }
 }
 
@@ -36,19 +31,14 @@ function formatDate(dateStr: string): string {
 }
 
 export default async function AvailabilityPage({ searchParams }: { searchParams: SearchParams }) {
-  const { start, end, zip, product: presetProduct } = searchParams;
-  const hasFullSearch = !!(start && zip);
+  const { start, end, product: presetProduct } = searchParams;
+  const hasFullSearch = !!start;
   const effectiveEnd = end || start;
 
-  let serviceable = true;
   let products: Product[] = [];
-  if (hasFullSearch && start && effectiveEnd && zip) {
-    const result = await getResults(start, effectiveEnd, zip);
-    serviceable = result.serviceable;
-    products = result.products;
+  if (hasFullSearch && start && effectiveEnd) {
+    products = await getResults(start, effectiveEnd);
   }
-
-  const deliveryFee = hasFullSearch && serviceable && zip ? calculateDeliveryFee(zip) : null;
 
   const pinnedProduct = presetProduct ? products.find((p) => p.slug === presetProduct) : undefined;
   const restProducts = pinnedProduct ? products.filter((p) => p.slug !== presetProduct) : products;
@@ -72,7 +62,7 @@ export default async function AvailabilityPage({ searchParams }: { searchParams:
           {hasFullSearch ? "Available Inflatables for Your Date" : "Find What's Available"}
         </h1>
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-          Tell us your dates and delivery ZIP — we'll show you only what's actually available.
+          Tell us your dates — we&apos;ll show you only what&apos;s actually available.
         </p>
       </section>
 
@@ -81,30 +71,15 @@ export default async function AvailabilityPage({ searchParams }: { searchParams:
           <AvailabilitySearchWidget
             presetStart={start}
             presetEnd={end}
-            presetZip={zip}
             presetProductSlug={presetProduct}
           />
         </div>
 
         {!hasFullSearch && (
-          <p className="text-center text-gray-500">Enter your dates and ZIP above to see availability.</p>
+          <p className="text-center text-gray-500">Enter your dates above to see availability.</p>
         )}
 
-        {hasFullSearch && !serviceable && (
-          <div className="text-center py-12 bg-red-50 rounded-2xl border border-red-100 max-w-xl mx-auto">
-            <div className="text-5xl mb-4">📍</div>
-            <h2 className="text-xl font-black text-blue-950 mb-2">We Don&apos;t Currently Deliver to {zip}</h2>
-            <p className="text-gray-600 mb-6">
-              We&apos;re always expanding our service area — text us and we&apos;ll let you know if that changes, or get a quote and we may still be able to help.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="sms:+18327161836" className="btn-primary inline-block">💬 Text Us</a>
-              <Link href="/quote" className="btn-secondary inline-block">Get a Quote</Link>
-            </div>
-          </div>
-        )}
-
-        {hasFullSearch && serviceable && orderedProducts.length === 0 && (
+        {hasFullSearch && orderedProducts.length === 0 && (
           <div className="text-center py-12 bg-blue-50 rounded-2xl border border-blue-100 max-w-xl mx-auto">
             <div className="text-5xl mb-4">🗓️</div>
             <h2 className="text-xl font-black text-blue-950 mb-2">Nothing Available for That Date</h2>
@@ -117,7 +92,7 @@ export default async function AvailabilityPage({ searchParams }: { searchParams:
                 {nearbyDates.map((d) => (
                   <Link
                     key={d.start}
-                    href={"/availability?start=" + d.start + "&end=" + d.end + "&zip=" + zip + (presetProduct ? "&product=" + presetProduct : "")}
+                    href={"/availability?start=" + d.start + "&end=" + d.end + (presetProduct ? "&product=" + presetProduct : "")}
                     className="bg-white border border-gray-200 hover:border-yellow-400 text-blue-950 font-semibold px-4 py-2 rounded-full text-sm transition-colors"
                   >
                     Try {d.label}
@@ -132,17 +107,7 @@ export default async function AvailabilityPage({ searchParams }: { searchParams:
           </div>
         )}
 
-        {hasFullSearch && serviceable && deliveryFee && (
-          <div className="max-w-xl mx-auto text-center -mt-6">
-            <span className={"inline-block text-sm font-semibold px-4 py-2 rounded-full " + (deliveryFee.feeCents > 0 ? "bg-blue-50 text-blue-800 border border-blue-100" : "bg-green-50 text-green-800 border border-green-100")}>
-              {deliveryFee.feeCents > 0
-                ? "🚚 Delivery to " + zip + ": $" + (deliveryFee.feeCents / 100).toFixed(2)
-                : "🚚 Free delivery to " + zip}
-            </span>
-          </div>
-        )}
-
-        {hasFullSearch && serviceable && orderedProducts.length > 0 && (
+        {hasFullSearch && orderedProducts.length > 0 && (
           <div>
             <h2 className="text-2xl font-black text-blue-950 mb-8 text-center">
               {orderedProducts.length} Available for {formatDate(start!)}
@@ -170,7 +135,7 @@ export default async function AvailabilityPage({ searchParams }: { searchParams:
                     <h3 className="font-bold text-blue-950 text-lg mb-1">{p.name}</h3>
                     <p className="text-gray-500 text-sm mb-4 line-clamp-2">{p.description}</p>
                     <Link
-                      href={"/checkout?product=" + p.slug + "&start=" + start + "&end=" + effectiveEnd + "&zip=" + zip}
+                      href={"/checkout?product=" + p.slug + "&start=" + start + "&end=" + effectiveEnd}
                       className="btn-primary text-sm w-full text-center block"
                     >
                       Book This Unit →

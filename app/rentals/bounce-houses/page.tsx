@@ -52,7 +52,7 @@ export default async function BounceHousesPage() {
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           Classic bouncers, princess palaces, and themed castles — clean, safe, and delivered to your door across Greater Houston.
         </p>
-        <p className="text-yellow-400 font-bold mt-3">Starting at $100/day · Free delivery within 20 miles</p>
+        <p className="text-yellow-400 font-bold mt-3">Starting at $100/day · Setup &amp; pickup included</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

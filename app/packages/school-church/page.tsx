@@ -30,7 +30,7 @@ export default function SchoolChurchPackagePage() {
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
           Multi-unit setups for larger events. We work with schools, churches, daycares, and HOAs throughout Greater Houston.
         </p>
-        <p className="text-yellow-400 font-bold mt-3">Custom quote · Free delivery within 20 miles</p>
+        <p className="text-yellow-400 font-bold mt-3">Custom quote · Setup &amp; pickup included</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">

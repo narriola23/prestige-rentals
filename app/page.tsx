@@ -2,13 +2,13 @@ import Link from "next/link";
 import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 
 const categories = [
-  { icon: "🏰", name: "Bounce Houses", desc: "Classic bouncers for every age and theme", href: "/rentals" },
-  { icon: "💧", name: "Water Slides", desc: "Beat the Houston heat all summer long", href: "/rentals" },
-  { icon: "🎠", name: "Combo Units", desc: "Bounce, slide & climb — all in one", href: "/rentals" },
-  { icon: "🏁", name: "Obstacle Courses", desc: "Action-packed fun for older kids & teens", href: "/rentals" },
-  { icon: "🎉", name: "Party Rentals", desc: "Tents, games & extras for any event", href: "/rentals" },
-  { icon: "🪑", name: "Tables & Chairs", desc: "Complete your setup with seating packages", href: "/rentals" },
-  { icon: "🍿", name: "Concessions", desc: "Popcorn machines, snow cones & more", href: "/rentals" },
+  { icon: "🏰", name: "Bounce Houses", desc: "Classic bouncers for every age and theme", href: "/rentals/bounce-houses" },
+  { icon: "💧", name: "Water Slides", desc: "Beat the Houston heat all summer long", href: "/rentals/water-slides" },
+  { icon: "🎠", name: "Combo Units", desc: "Bounce, slide & climb — all in one", href: "/rentals/combo-units" },
+  { icon: "🏁", name: "Obstacle Courses", desc: "Action-packed fun for older kids & teens", href: "/rentals/obstacle-courses" },
+  { icon: "🎉", name: "Party Rentals", desc: "Tents, games & extras for any event", href: "/rentals/party-rentals" },
+  { icon: "🪑", name: "Tables & Chairs", desc: "Complete your setup with seating packages", href: "/rentals/tables-chairs" },
+  { icon: "🍿", name: "Concessions", desc: "Popcorn machines, snow cones & more", href: "/rentals/concessions" },
 ];
 
 const featuredItems = [
@@ -20,7 +20,7 @@ const featuredItems = [
 const whyUs = [
   { icon: "✅", title: "Fully Insured", desc: "General liability coverage on every single rental. Proof of insurance available on request." },
   { icon: "⭐", title: "5-Star Rated", desc: "Hundreds of 5-star reviews from Houston families who've trusted us to show up and deliver." },
-  { icon: "🚚", title: "Free Delivery & Setup", desc: "Free within 20 miles of our Houston base — a small per-mile fee applies beyond that. We load, deliver, set up, and pick up." },
+  { icon: "🚚", title: "Delivery & Setup", desc: "We load, deliver, set up, and pick up — you enjoy the party. Delivery is quoted at checkout based on your address." },
   { icon: "🧼", title: "Spotlessly Clean", desc: "Every inflatable is sanitized top to bottom after every rental. Always." },
   { icon: "📅", title: "Easy Online Booking", desc: "Reserve in minutes. We confirm within 2 hours and walk you through every detail." },
   { icon: "🏠", title: "Local & Family-Owned", desc: "We're a Houston business. When you call, a real local person answers." },
@@ -39,7 +39,7 @@ const packages = [
     icon: "🎂",
     name: "Backyard Birthday",
     desc: "The classic Houston birthday setup. A bounce house delivered to your door, set up before guests arrive, and picked up when the party's over.",
-    highlights: ["1 inflatable of your choice", "Free delivery within 20 miles", "Setup & pickup included"],
+    highlights: ["1 inflatable of your choice", "Delivery to your door", "Setup & pickup included"],
     price: "From $100",
   },
   {
@@ -47,7 +47,7 @@ const packages = [
     icon: "💧",
     name: "Summer Water Party",
     desc: "Beat the Houston heat with a water slide or wet-capable combo. Perfect for backyard summer birthdays and end-of-school parties.",
-    highlights: ["Water slide or wet combo", "Free delivery within 20 miles", "Great for ages 4–14"],
+    highlights: ["Water slide or wet combo", "Delivery to your door", "Great for ages 4–14"],
     price: "From $180",
   },
   {
@@ -88,7 +88,7 @@ const faqPreview = [
   },
   {
     q: "What's included in the rental price?",
-    a: "Every rental includes professional setup, a safety inspection, and pickup. Delivery is free within 20 miles of our Houston base, with a small per-mile fee beyond that.",
+    a: "Every rental includes professional setup, a safety inspection, and pickup. Delivery is quoted at checkout based on your delivery address.",
   },
   {
     q: "What happens if it rains on my event day?",
@@ -123,7 +123,7 @@ export default function HomePage() {
             <Link href="/rentals" className="text-yellow-400 hover:text-yellow-300 font-semibold underline underline-offset-4">Browse All Inflatables</Link>
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-gray-300">
-            <span>✅ Free Delivery &amp; Setup</span>
+            <span>✅ Delivery, Setup &amp; Pickup</span>
             <span>✅ Fully Insured</span>
             <span>✅ Same-Day Availability</span>
             <span>✅ 5-Star Rated</span>
@@ -295,7 +295,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-black text-blue-950 mb-3">Service Area</h2>
           <p className="text-gray-600 mb-8 max-w-xl mx-auto">
-            We proudly serve Houston and all surrounding communities. Free delivery within 20 miles — $2/mile beyond that.
+            We proudly serve Houston and all surrounding communities, with delivery straight to your door.
           </p>
           <div className="flex flex-wrap justify-center gap-3 mb-8">
             {serviceAreaCities.map((city) => (
