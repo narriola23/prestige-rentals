@@ -69,12 +69,12 @@ VALUES
 
   ('The Sun', 'the-sun',
    'A bright, sunshine-themed dry bounce house — a cheerful, compact option for backyard birthday parties.',
-   14500, 7250, 'Bounce House', true, NULL,
+   14500, 7250, 'Bounce House', true, '/images/products/the-sun/1.jpg',
    25, 20, 20, 20.0, 14.0, 15.0, 'Dry', 'No food, drinks, or shoes inside.'),
 
   ('The Sunny Slide', 'the-sunny-slide',
    'A sunshine-themed water slide, perfect for beating the Houston heat at summer parties.',
-   18000, 9000, 'Water Slide', true, NULL,
+   18000, 9000, 'Water Slide', true, '/images/products/the-sunny-slide/1.jpg',
    25, 20, 20, 23.0, 14.0, 15.0, 'Wet', 'No food, drinks, or shoes inside.'),
 
   ('The Tropical', 'the-tropical',
@@ -117,9 +117,9 @@ ON CONFLICT (slug) DO UPDATE SET
   wet_dry = EXCLUDED.wet_dry,
   special_requirements = EXCLUDED.special_requirements;
 
--- Real photo galleries for the 6 products with real photos on hand.
--- (The Sun, The Sunny Slide, and The White Castle have no photos yet —
--- they fall back to a placeholder image in the UI until photos arrive.)
+-- Real photo galleries for the 8 products with real photos on hand.
+-- (The White Castle has no photos yet — it falls back to a placeholder
+-- image in the UI until photos arrive.)
 INSERT INTO product_images (product_id, image_url, sort_order)
 SELECT p.id, v.image_url, v.sort_order
 FROM (VALUES
@@ -140,7 +140,9 @@ FROM (VALUES
   ('double-princess-waterslide', '/images/products/double-princess-waterslide/1.jpg', 1),
   ('double-princess-waterslide', '/images/products/double-princess-waterslide/2.jpg', 2),
   ('the-tropical', '/images/products/the-tropical/1.jpg', 1),
-  ('the-castle', '/images/products/the-castle/1.jpg', 1)
+  ('the-castle', '/images/products/the-castle/1.jpg', 1),
+  ('the-sun', '/images/products/the-sun/1.jpg', 1),
+  ('the-sunny-slide', '/images/products/the-sunny-slide/1.jpg', 1)
 ) AS v(slug, image_url, sort_order)
 JOIN products p ON p.slug = v.slug
 WHERE NOT EXISTS (
