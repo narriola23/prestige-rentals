@@ -179,9 +179,12 @@ Bought at Porkbun. Pointed at Render (apex `A → 216.24.57.1` + `www` CNAME →
 - **Porkbun DNS gotchas (for next time):** the DNS editor is write-only (never lists existing records) and stages edits behind a "Submit Records" button; "Do not delete existing records" must stay CHECKED to merge (unchecking = replace-all). Apex must be an **A record to `216.24.57.1`, NOT an ALIAS** — the ALIAS flattens to Cloudflare IPs with an AAAA that Render's apex verification rejects.
 
 ### 2. Google Search Console (remaining SEO step) — needs the client's Google account
-Add `prestigerentalshouston.com` as a property (verify via a DNS TXT record at Porkbun) and submit `/sitemap.xml`. A formal "Change of Address" from the onrender.com URL isn't possible (can't domain-verify an onrender subdomain) — the 308 redirect above is the substitute. Client is deciding whether to own the property under `bounceprestigerentals@gmail.com` (recommended: yes — dedicated business account).
+Add `prestigerentalshouston.com` as a property (verify via a DNS TXT record at Porkbun) and submit `/sitemap.xml`. A formal "Change of Address" from the onrender.com URL isn't possible (can't domain-verify an onrender subdomain) — the 308 redirect above is the substitute. **Client is leaning toward owning the property under `bounceprestigerentals@gmail.com`** (their business Gmail — recommended). When they're logged into Search Console as that account, drive it in Chrome: add property → add the DNS TXT at Porkbun → submit sitemap.
 
-### 3. Switch Stripe to live mode (when ready to accept real payments)
+### 3. (Small, optional) Point form submissions at the business Gmail
+Contact/quote submissions currently go to `CONTACT_EMAIL` (defaults to `narriola23@gmail.com`). Client is consolidating business mail into `bounceprestigerentals@gmail.com` — offered to set the `CONTACT_EMAIL` env var on Render to match (no code change needed); awaiting their go-ahead.
+
+### 4. Switch Stripe to live mode (when ready to accept real payments)
 - See "Stripe" section above for exact steps
 
 ### Later / not yet scheduled
@@ -195,7 +198,7 @@ Add `prestigerentalshouston.com` as a property (verify via a DNS TXT record at P
 ## Update This Section After Every Session
 **Last updated:** 7/22/2026
 **Last thing completed:** **Custom domain cutover — `prestigerentalshouston.com` is live** (PR #24, merged). Bought at Porkbun; added to Render as apex (primary) + www (redirects to apex); apex `A → 216.24.57.1` (NOT ALIAS — see Next Steps gotcha), www CNAME → onrender; SSL issued for both. Code: `SITE_URL` → custom domain (feeds sitemap/robots/schema), city-page URL refactored to import `SITE_URL`, display email `info@prestigerentals.com` → `info@prestigerentalshouston.com` everywhere (old was a domain we don't own), Resend `from:` → `notifications@prestigerentalshouston.com`, and a Host-based 308 redirect from the onrender.com host → custom domain. Resend email domain verified (DKIM/SPF/DMARC at Porkbun). Porkbun email forwarding `info@prestigerentalshouston.com` → `bounceprestigerentals@gmail.com`. Verified live in prod: HTTPS+valid SSL on the custom domain, onrender→custom 308 redirect, sitemap emits custom-domain URLs. Earlier this session: PR #23 (7/10 task list) merged + `NEXT_PUBLIC_BUSINESS_PHONE` Render env var updated to (346) 244-3261.
-**Next session should start at:** Google Search Console (Next Steps #2 — needs client's Google account), then Stripe live mode when ready for real payments.
+**Next session should start at:** Google Search Console (Next Steps #2 — needs client logged into `bounceprestigerentals@gmail.com`). Quick wins if the client confirms: set `CONTACT_EMAIL` on Render to the business Gmail (#3). Then Stripe live mode (#4) when ready for real payments. **Open PR to merge:** none — this docs PR (#25) is the last; #23 and #24 are already merged.
 
 ---
 
