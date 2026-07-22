@@ -120,7 +120,7 @@ export default function RentalAgreementPage() {
             <p className="text-blue-950 font-semibold mb-1">Questions about this agreement?</p>
             <p className="text-gray-600 text-sm mb-4">We're happy to walk you through anything before you book.</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="tel:+18327161836" className="btn-primary inline-block">📞 (832) 716-1836</a>
+              <a href="tel:+13462443261" className="btn-primary inline-block">📞 (346) 244-3261</a>
               <Link href="/contact" className="btn-secondary inline-block">Send a Message</Link>
             </div>
           </div>

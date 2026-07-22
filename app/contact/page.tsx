@@ -41,7 +41,7 @@ export default function ContactPage() {
               <div className="text-center py-8">
                 <div className="text-5xl mb-4">📨</div>
                 <h3 className="text-xl font-black text-blue-950 mb-2">Message Sent!</h3>
-                <p className="text-gray-600">Thanks for reaching out! We&apos;ll get back to you within a few hours.</p>
+                <p className="text-gray-600">Thanks for reaching out! We&apos;ll get back to you within 1–2 business days.</p>
                 <button onClick={() => { setSubmitted(false); setForm({ name: "", email: "", phone: "", message: "" }); }} className="btn-primary mt-6">Send Another Message</button>
               </div>
             ) : (

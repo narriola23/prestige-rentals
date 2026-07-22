@@ -86,7 +86,7 @@ export default async function ObstacleCoursesPage() {
               <div className="text-5xl mb-4">🏁</div>
               <h2 className="text-xl font-black text-blue-950 mb-2">Obstacle Course Inventory Loading Soon</h2>
               <p className="text-gray-600 mb-6 max-w-md mx-auto">Call us to check current obstacle course availability for your event.</p>
-              <a href="tel:+18327161836" className="btn-primary inline-block">📞 Call (832) 716-1836</a>
+              <a href="tel:+13462443261" className="btn-primary inline-block">📞 Call (346) 244-3261</a>
             </div>
           )}
           <div className="text-center mt-8"><Link href="/rentals" className="btn-secondary inline-block">View All Inflatables →</Link></div>
@@ -110,7 +110,7 @@ export default async function ObstacleCoursesPage() {
           <p className="text-gray-600 text-sm leading-relaxed mb-3">
             Obstacle courses are longer than standard bounce houses — typically 35–50 feet long and 10–12 feet wide. A standard backyard can work, but we recommend confirming your space when booking. We can also set up in parks and parking lots with permission.
           </p>
-          <p className="text-gray-600 text-sm">Questions about your space? <a href="tel:+18327161836" className="text-yellow-600 font-medium">(832) 716-1836</a></p>
+          <p className="text-gray-600 text-sm">Questions about your space? <a href="tel:+13462443261" className="text-yellow-600 font-medium">(346) 244-3261</a></p>
         </section>
 
         <section className="bg-gray-50 rounded-2xl p-8">
@@ -137,7 +137,7 @@ export default async function ObstacleCoursesPage() {
         <section className="bg-yellow-500 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-black text-blue-950 mb-2">Book an Obstacle Course</h2>
           <p className="text-blue-800 mb-6">Perfect for larger groups — check your date and book online.</p>
-          <div className="max-w-xl mx-auto text-left mb-4"><AvailabilitySearchWidget /></div><a href="tel:+18327161836" className="text-blue-950 font-bold underline underline-offset-4">Or call: 📞 (832) 716-1836</a>
+          <div className="max-w-xl mx-auto text-left mb-4"><AvailabilitySearchWidget /></div><a href="tel:+13462443261" className="text-blue-950 font-bold underline underline-offset-4">Or call: 📞 (346) 244-3261</a>
         </section>
 
       </div>

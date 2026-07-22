@@ -85,7 +85,7 @@ export default function RainPolicyPage() {
               We monitor the weather forecast closely for all upcoming events. If conditions look concerning, we'll reach out the evening before or the morning of your event. You're also welcome to contact us any time:
             </p>
             <ul className="space-y-2 text-gray-600 text-sm">
-              <li>📞 Call or text: <a href="tel:+18327161836" className="text-yellow-600 font-medium">(832) 716-1836</a></li>
+              <li>📞 Call or text: <a href="tel:+13462443261" className="text-yellow-600 font-medium">(346) 244-3261</a></li>
               <li>🕐 Available Mon–Sun, 7am–8pm</li>
             </ul>
           </section>
@@ -93,7 +93,7 @@ export default function RainPolicyPage() {
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
             <p className="text-blue-950 font-semibold mb-1">Concerned about the forecast?</p>
             <p className="text-gray-600 text-sm mb-4">Give us a call — we'll check the weather together and make a plan.</p>
-            <a href="tel:+18327161836" className="btn-primary inline-block">📞 (832) 716-1836</a>
+            <a href="tel:+13462443261" className="btn-primary inline-block">📞 (346) 244-3261</a>
           </div>
         </div>
       </div>

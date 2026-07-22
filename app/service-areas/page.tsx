@@ -64,8 +64,8 @@ export default function ServiceAreasPage() {
             We may still be able to serve you. Our delivery range covers a large portion of Greater Houston. If your city isn&apos;t listed, give us a call or send a message — we&apos;ll let you know if we can make it work, and what if any delivery fee applies.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href="tel:+18327161836" className="btn-primary inline-block text-center">
-              📞 Call (832) 716-1836
+            <a href="tel:+13462443261" className="btn-primary inline-block text-center">
+              📞 Call (346) 244-3261
             </a>
             <Link href="/contact" className="btn-secondary inline-block text-center">
               Send a Message

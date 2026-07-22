@@ -45,7 +45,7 @@ export default function PartyRentalsPage() {
           </p>
           <p className="text-gray-500 text-sm mb-6">Pricing varies by item — we&apos;ll put together a custom quote based on your event.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="tel:+18327161836" className="btn-primary inline-block">📞 Call (832) 716-1836</a>
+            <a href="tel:+13462443261" className="btn-primary inline-block">📞 Call (346) 244-3261</a>
             <Link href="/contact" className="btn-secondary inline-block">Send a Message</Link>
           </div>
         </section>
@@ -80,7 +80,7 @@ export default function PartyRentalsPage() {
         <section className="bg-yellow-500 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-black text-blue-950 mb-2">Planning a Party in Houston?</h2>
           <p className="text-blue-800 mb-6">Call us and we&apos;ll help you put together the perfect setup for your event and budget.</p>
-          <div className="max-w-xl mx-auto text-left mb-4"><AvailabilitySearchWidget /></div><a href="tel:+18327161836" className="text-blue-950 font-bold underline underline-offset-4">Or call: 📞 (832) 716-1836</a>
+          <div className="max-w-xl mx-auto text-left mb-4"><AvailabilitySearchWidget /></div><a href="tel:+13462443261" className="text-blue-950 font-bold underline underline-offset-4">Or call: 📞 (346) 244-3261</a>
         </section>
 
       </div>

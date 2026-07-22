@@ -40,6 +40,16 @@ export async function getActiveProducts(): Promise<Product[]> {
   return query<Product>('SELECT * FROM products WHERE is_active = true ORDER BY name ASC');
 }
 
+// Distinct category names that currently have at least one active product.
+// Used to hide catalog sections that have no inventory yet (they reappear
+// automatically once matching products are seeded).
+export async function getActiveCategories(): Promise<string[]> {
+  const rows = await query<{ category: string }>(
+    "SELECT DISTINCT category FROM products WHERE is_active = true AND category IS NOT NULL"
+  );
+  return rows.map((r) => r.category);
+}
+
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   return queryOne<Product>('SELECT * FROM products WHERE slug = $1 AND is_active = true', [slug]);
 }

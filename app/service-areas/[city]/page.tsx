@@ -208,7 +208,7 @@ export async function generateMetadata({
   if (!city) return {};
   return {
     title: `Bounce House Rentals in ${city.name}, TX | Prestige Rentals`,
-    description: `Prestige Rentals delivers premium bounce houses and inflatables to ${city.name}, TX. Setup and pickup included. Book online or call (832) 716-1836.`,
+    description: `Prestige Rentals delivers premium bounce houses and inflatables to ${city.name}, TX. Setup and pickup included. Book online or call (346) 244-3261.`,
   };
 }
 
@@ -230,7 +230,7 @@ export default function ServiceAreaPage({
     "@type": "LocalBusiness",
     name: "Prestige Rentals",
     description: `Bounce house and inflatable rentals serving ${city.name}, TX and Greater Houston.`,
-    telephone: "+18327161836",
+    telephone: "+13462443261",
     email: "info@prestigerentals.com",
     url: "https://prestige-rentals.onrender.com",
     areaServed: {
@@ -273,8 +273,8 @@ export default function ServiceAreaPage({
             </p>
             <div className="mt-6">
               <AvailabilitySearchWidget />
-              <a href="tel:+18327161836" className="block text-center mt-3 text-blue-950 font-semibold underline underline-offset-4">
-                Or call us: 📞 (832) 716-1836
+              <a href="tel:+13462443261" className="block text-center mt-3 text-blue-950 font-semibold underline underline-offset-4">
+                Or call us: 📞 (346) 244-3261
               </a>
             </div>
           </div>
@@ -372,16 +372,16 @@ export default function ServiceAreaPage({
           </h2>
           <p className="text-blue-800 mb-6 max-w-xl mx-auto">
             Check availability and reserve your inflatable online in minutes. Our
-            team will confirm within 2 hours.
+            team will confirm within 1–2 business days.
           </p>
           <div className="max-w-2xl mx-auto text-left mb-4">
             <AvailabilitySearchWidget />
           </div>
           <a
-            href="tel:+18327161836"
+            href="tel:+13462443261"
             className="text-blue-950 font-bold underline underline-offset-4"
           >
-            Or call: 📞 (832) 716-1836
+            Or call: 📞 (346) 244-3261
           </a>
         </section>
 

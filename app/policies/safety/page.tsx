@@ -108,7 +108,7 @@ export default function SafetyRulesPage() {
               If the inflatable begins to deflate unexpectedly, evacuate all children immediately and stay clear of the unit. Check that the blower is plugged in and the power source is active. Call us right away:
             </p>
             <p className="font-semibold text-blue-950">
-              📞 <a href="tel:+18327161836" className="text-yellow-600">(832) 716-1836</a> — available 7am–8pm daily
+              📞 <a href="tel:+13462443261" className="text-yellow-600">(346) 244-3261</a> — available 7am–8pm daily
             </p>
           </section>
 

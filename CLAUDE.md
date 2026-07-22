@@ -160,13 +160,13 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 - `app/admin/bookings/page.tsx` + `actions.tsx` — payment column now shows `payment_status`/`payment_type` badge instead of the old `deposit_paid` ✅/⏳; new `MarkPaymentPaid` action
 
 ### ⚠️ Known issues / watch items
-- Combo-units and obstacle-courses category pages have zero real SKUs backing them now that the placeholders are deactivated — they show a graceful fallback, but there's no real inventory in those categories at all
+- Combo-units and obstacle-courses category pages have zero real SKUs backing them — they show a graceful fallback, and as of 7/10 they (plus Party Rentals and Concessions) are **hidden from the homepage category grid** until inventory exists (see homepage note below)
 - The White Castle has no real photos yet (placeholder fallback)
 - Add-ons are seeded and displayed on product pages, but aren't yet selectable/priced into the checkout flow itself — informational only for now
 - Delivery fee uses straight-line (haversine) ZIP-centroid distance, not real driving distance — a deliberate simplification, revisit if it proves inaccurate in practice
 - `service_zip_codes` now has ~99 ZIPs from the client's intake list — still not necessarily exhaustive of the real delivery radius
 - Resend sends from `onboarding@resend.dev` until custom domain verified
-- `NEXT_PUBLIC_BUSINESS_PHONE` env var (8327161836) is not yet used by all pages — contact page hardcodes (346) 244-3261 separately
+- **Phone number is now (346) 244-3261 everywhere in code** (old 832-716-1836 fully removed; Footer hardcodes the new number rather than reading the env var). ⚠️ The `NEXT_PUBLIC_BUSINESS_PHONE` Render env var still holds the old `8327161836` — it's only consumed server-side now (the payment-intent SMS-notification fallback), but **update it to (346) 244-3261 on Render** to fully retire the old number.
 - Static route pages use `export const dynamic = "force-dynamic"` for DB fetches
 - Stripe is live in test mode, not real/live payments yet (see "Stripe" above)
 
@@ -191,6 +191,13 @@ One domain purchase (~$10–20/year for a `.com`; Cloudflare Registrar or Namech
 ---
 
 ## Update This Section After Every Session
-**Last updated:** 7/9/2026
-**Last thing completed:** Client-requested UX pass: (1) removed the ZIP field from availability search and all pre-checkout delivery-fee/"free within 20 miles" copy site-wide — delivery is now priced only at checkout from the customer's address (booking API still validates ZIP as a backstop); (2) homepage category cards now link to their real category pages instead of all pointing at /rentals; (3) fixed iOS Safari date-input overflow (global CSS fix in globals.css) that broke the availability widget and quote form layouts on mobile. Earlier same day: real photos for The Sun and The Sunny Slide (PR #21).
-**Next session should start at:** Buying a custom domain (see "Next Steps" #1) — everything else on CLAUDE.md's original build backlog is now live. After that: Stripe live mode when the client is ready to accept real payments.
+**Last updated:** 7/10/2026
+**Last thing completed:** Client task list (`prestige-updates-2026-07-10.md`), branch `feature/site-updates-2026-07-10`:
+1. **Phone number swap** — replaced 832-716-1836 with (346) 244-3261 / `tel:+13462443261` site-wide (~27 files); Footer now hardcodes it instead of reading `NEXT_PUBLIC_BUSINESS_PHONE`. ⚠️ Still need to update that Render env var (see Known Issues).
+2. **Empty catalog sections hidden** — homepage category grid is now DB-driven (`getActiveCategories()` in `lib/products.ts`, homepage is now `force-dynamic`); a card only shows if one of its backing `cats` has active inventory. Currently shows Bounce Houses / Water Slides / Tables & Chairs; hides Combo Units, Obstacle Courses, Party Rentals, Concessions. They reappear automatically when matching products are seeded. (Concessions elotero cart is on hold per Leslie & Eri.)
+3. **Availability ZIP gate re-added** ⚠️ **This reverses PR #22 (7/9), which removed ZIP from availability.** The search widget has a required Delivery ZIP field again; the availability page checks `isZipServiceable(zip)` and shows a "call / request a custom quote" prompt for out-of-area ZIPs (no fee shown — delivery is still priced only at checkout from the full address). Confirm the client really wants this back given it was just removed.
+4. **Availability results ordering** — inflatables first (price high→low), Tables & Chairs last.
+5. **Response-time copy** — "within 2 hours / a few hours" → "1–2 business days" (homepage, FAQ, contact + quote success messages, city pages).
+
+Verified locally against the live DB (read-only): homepage shows only the 3 stocked categories; in-area ZIP orders $255→$100 then Tables/Chairs; out-of-area ZIP shows the quote prompt with no fee; `next build` passes.
+**Next session should start at:** Merge/verify the above PR, then update the `NEXT_PUBLIC_BUSINESS_PHONE` Render env var. Then: buying a custom domain (Next Steps #1) — the last big pre-launch item — followed by Stripe live mode when the client is ready for real payments. Task 6 (custom-domain SSL/trust check) and Task 7 (payments-without-an-LLC: sole-proprietor Stripe uses an SSN, no LLC required — confirm with the processor) are both waiting on the domain purchase / a business decision, not code.

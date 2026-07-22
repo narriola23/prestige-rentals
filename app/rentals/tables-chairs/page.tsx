@@ -76,7 +76,7 @@ export default async function TablesChairsPage() {
               </p>
               <p className="text-gray-500 text-sm mb-6">Chairs from $2/each · Tables from $8/each · Packages available</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="tel:+18327161836" className="btn-primary inline-block">📞 Call (832) 716-1836</a>
+                <a href="tel:+13462443261" className="btn-primary inline-block">📞 Call (346) 244-3261</a>
                 <Link href="/contact" className="btn-secondary inline-block">Send a Message</Link>
               </div>
             </div>
@@ -122,7 +122,7 @@ export default async function TablesChairsPage() {
           <h2 className="text-2xl font-black text-blue-950 mb-2">Need Seating for Your Event?</h2>
           <p className="text-blue-800 mb-6">Call us to check availability and put together a full event package.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="tel:+18327161836" className="bg-blue-950 hover:bg-blue-900 text-white font-bold px-8 py-4 rounded-lg transition-all shadow-lg inline-block">📞 Call (832) 716-1836</a>
+            <a href="tel:+13462443261" className="bg-blue-950 hover:bg-blue-900 text-white font-bold px-8 py-4 rounded-lg transition-all shadow-lg inline-block">📞 Call (346) 244-3261</a>
             <Link href="/contact" className="bg-white hover:bg-gray-50 text-blue-950 font-bold px-8 py-4 rounded-lg border border-blue-200 transition-all inline-block">Send a Message</Link>
           </div>
         </section>

@@ -14,7 +14,7 @@ const faqs = [
     items: [
       {
         q: "How do I book a bounce house rental?",
-        a: "Booking is simple. Browse our inflatables, pick the one you want, and complete the online booking form. Our team will call you within 2 hours to confirm your date and collect the deposit. You can also call or text us directly at (832) 716-1836 any day 7am–8pm.",
+        a: "Booking is simple. Browse our inflatables, pick the one you want, and complete the online booking form. Our team will call you within 1–2 business days to confirm your date and collect the deposit. You can also call or text us directly at (346) 244-3261 any day 7am–8pm.",
       },
       {
         q: "How far in advance should I book?",
@@ -162,10 +162,10 @@ export default function FaqPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="tel:+18327161836"
+              href="tel:+13462443261"
               className="bg-blue-950 hover:bg-blue-900 text-white font-bold px-8 py-3 rounded-lg transition-all shadow inline-block"
             >
-              📞 Call (832) 716-1836
+              📞 Call (346) 244-3261
             </a>
             <Link
               href="/contact"

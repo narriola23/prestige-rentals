@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default function Footer() {
-  const phone = process.env.NEXT_PUBLIC_BUSINESS_PHONE || "(713) 555-0100";
+  const phone = "(346) 244-3261";
   return (
     <footer className="bg-blue-950 text-gray-400 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -43,7 +43,7 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm">
-              <li>📞 <a href={"tel:" + phone.replace(/[^0-9+]/g, "")} className="hover:text-yellow-400 transition-colors">{phone}</a></li>
+              <li>📞 <a href="tel:+13462443261" className="hover:text-yellow-400 transition-colors">{phone}</a></li>
               <li>✉️ <a href="mailto:info@prestigerentals.com" className="hover:text-yellow-400 transition-colors">info@prestigerentals.com</a></li>
               <li>📍 Houston, TX &amp; Surrounding Areas</li>
               <li className="pt-1">🕐 Mon–Sun: 7am – 8pm</li>

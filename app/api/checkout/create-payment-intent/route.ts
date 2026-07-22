@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
     const { getStripe } = await import('@/lib/stripe');
     const stripe = getStripe();
-    const phone = process.env.NEXT_PUBLIC_BUSINESS_PHONE || '(832) 716-1836';
+    const phone = process.env.NEXT_PUBLIC_BUSINESS_PHONE || '(346) 244-3261';
 
     if (!stripe) {
       return NextResponse.json(
