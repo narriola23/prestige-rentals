@@ -160,6 +160,16 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 - `lib/db.ts` — SSL now determined by DB host (not `NODE_ENV`), so local dev against the real Render DB works (see "Local Development" above)
 - `app/admin/bookings/page.tsx` + `actions.tsx` — payment column now shows `payment_status`/`payment_type` badge instead of the old `deposit_paid` ✅/⏳; new `MarkPaymentPaid` action
 
+### Admin access & auth (hardened 7/22/2026)
+- **URL:** `/admin` → redirects to `/admin/login`. One shared password, the `ADMIN_PASSWORD` env var on Render. No per-user accounts.
+- **Session:** `app/api/admin/auth/route.ts` sets an `admin_auth` cookie (httpOnly, secure in prod, sameSite lax, 7-day expiry). `middleware.ts` validates it on every admin request.
+- **The cookie stores a SHA-256 hash of the password, not the password itself** (`lib/admin-auth.ts`). It was previously the raw password, so anyone who obtained the cookie also obtained the password. **Changing this invalidated all existing sessions — everyone had to log in once after the 7/22 deploy.** Keep `middleware.ts` and the auth route in sync; they must hash identically or nobody can log in.
+- **`middleware.ts`'s matcher covers `/admin/:path*` AND `/api/admin/:path*`.** ⚠️ Do not narrow it. Before 7/22 it matched only `/admin/*`, which left every admin API route open to the internet — `PATCH /api/admin/bookings/{id}/mark-paid` needed no body and no auth, so any booking could be marked paid and confirmed by anyone who guessed a (sequential, enumerable) booking id. **Any new admin API route is protected automatically by living under `/api/admin/` — put it there.**
+- `PUBLIC_ADMIN_ROUTES` in `middleware.ts` is the deliberate allowlist: `/admin/login`, `/api/admin/auth`, `/api/admin/logout`. Nothing else belongs in it.
+- Unauthenticated admin API calls get `401 {"error":"Unauthorized"}`; unauthenticated page loads get a 307 to the login form.
+- Login is rate limited to 10 attempts per IP per 15 min (in-memory, in the auth route). This relies on the service running a **single instance** — if `numInstances` is ever raised, move this to the DB or a shared store or it silently weakens.
+- **Known remaining limits (accepted, not bugs):** one shared password means no audit trail of which stakeholder did what, and no way to revoke one person without rotating for everyone. Posting a malformed JSON body to the auth route returns 500 rather than 400 (pre-existing, cosmetic). Real per-user accounts are the fix if admin access ever goes beyond a few trusted people.
+
 ### ⚠️ Known issues / watch items
 - Combo-units and obstacle-courses category pages have zero real SKUs backing them — they show a graceful fallback, and as of 7/10 they (plus Party Rentals and Concessions) are **hidden from the homepage category grid** until inventory exists (see homepage note below)
 - The White Castle has no real photos yet (placeholder fallback)
@@ -189,6 +199,7 @@ Domain property `prestigerentalshouston.com` created under **`bounceprestigerent
 
 ### 4. Switch Stripe to live mode — THE LAST BIG ITEM (waiting on the client's go-ahead)
 - See "Stripe" section above for exact steps. Client has not green-lit real payments yet; do not switch without an explicit go-ahead.
+- ⚠️ **Do not go live until the admin API auth fix is deployed and verified in production** (see "Admin access & auth"). While `/api/admin/bookings/{id}/mark-paid` was unauthenticated, anyone could mark their own booking paid — harmless in test mode, but a way to take real inventory for free once live payments are on.
 
 ### Later / not yet scheduled
 - Wire add-ons into the checkout flow itself (currently informational-only on product pages)
