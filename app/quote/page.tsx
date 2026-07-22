@@ -65,7 +65,7 @@ export default function QuotePage() {
               <div className="text-center py-8">
                 <div className="text-5xl mb-4">📋</div>
                 <h3 className="text-xl font-black text-blue-950 mb-2">Quote Request Sent!</h3>
-                <p className="text-gray-600">Thanks! We&apos;ll follow up with a custom quote within a few hours.</p>
+                <p className="text-gray-600">Thanks! We&apos;ll follow up with a custom quote within 1–2 business days.</p>
                 <button onClick={() => { setSubmitted(false); setForm(initialForm); }} className="btn-primary mt-6">Request Another Quote</button>
               </div>
             ) : (

@@ -75,7 +75,7 @@ export default async function ConfirmationPage({ searchParams }: { searchParams:
 
         <p className="text-sm text-gray-500 mb-6">
           A confirmation has been noted on your account. Questions? Call us at{" "}
-          <a href="tel:+18327161836" className="text-yellow-600 font-semibold">(832) 716-1836</a>.
+          <a href="tel:+13462443261" className="text-yellow-600 font-semibold">(346) 244-3261</a>.
         </p>
         <Link href="/" className="btn-secondary inline-block">Back to Home</Link>
       </div>

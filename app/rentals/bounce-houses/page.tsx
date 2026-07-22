@@ -97,7 +97,7 @@ export default async function BounceHousesPage() {
               <p className="text-gray-600 mb-6 max-w-md mx-auto">
                 We&apos;re adding our full bounce house lineup to the site. In the meantime, call us and we&apos;ll tell you exactly what&apos;s available for your date.
               </p>
-              <a href="tel:+18327161836" className="btn-primary inline-block">📞 Call (832) 716-1836</a>
+              <a href="tel:+13462443261" className="btn-primary inline-block">📞 Call (346) 244-3261</a>
             </div>
           )}
           <div className="text-center mt-8">
@@ -152,7 +152,7 @@ export default async function BounceHousesPage() {
         <section className="bg-yellow-500 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-black text-blue-950 mb-2">Ready to Book a Bounce House?</h2>
           <p className="text-blue-800 mb-6">Check availability for your date and reserve online in minutes.</p>
-          <div className="max-w-xl mx-auto text-left mb-4"><AvailabilitySearchWidget /></div><a href="tel:+18327161836" className="text-blue-950 font-bold underline underline-offset-4">Or call: 📞 (832) 716-1836</a>
+          <div className="max-w-xl mx-auto text-left mb-4"><AvailabilitySearchWidget /></div><a href="tel:+13462443261" className="text-blue-950 font-bold underline underline-offset-4">Or call: 📞 (346) 244-3261</a>
         </section>
 
       </div>

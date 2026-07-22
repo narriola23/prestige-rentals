@@ -84,7 +84,7 @@ export default function SchoolChurchPackagePage() {
           <p className="text-blue-800 mb-6">Tell us your headcount and date, and we'll put together a custom quote for your event.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/quote" className="bg-blue-950 hover:bg-blue-900 text-white font-bold px-8 py-4 rounded-lg transition-all shadow-lg inline-block">Get a Custom Quote</Link>
-            <a href="tel:+18327161836" className="bg-white hover:bg-gray-50 text-blue-950 font-bold px-8 py-4 rounded-lg border border-blue-200 transition-all inline-block">📞 Call (832) 716-1836</a>
+            <a href="tel:+13462443261" className="bg-white hover:bg-gray-50 text-blue-950 font-bold px-8 py-4 rounded-lg border border-blue-200 transition-all inline-block">📞 Call (346) 244-3261</a>
           </div>
         </section>
 

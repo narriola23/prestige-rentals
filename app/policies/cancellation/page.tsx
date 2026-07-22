@@ -71,7 +71,7 @@ export default function CancellationPolicyPage() {
               To cancel or reschedule, please contact us as soon as possible:
             </p>
             <ul className="space-y-2 text-gray-600 text-sm">
-              <li>📞 Call or text: <a href="tel:+18327161836" className="text-yellow-600 font-medium">(832) 716-1836</a></li>
+              <li>📞 Call or text: <a href="tel:+13462443261" className="text-yellow-600 font-medium">(346) 244-3261</a></li>
               <li>✉️ Email: <a href="mailto:info@prestigerentals.com" className="text-yellow-600 font-medium">info@prestigerentals.com</a></li>
               <li>🕐 Available Mon–Sun, 7am–8pm</li>
             </ul>

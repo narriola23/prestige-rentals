@@ -7,6 +7,7 @@ interface AvailabilitySearchWidgetProps {
   presetProductSlug?: string;
   presetStart?: string;
   presetEnd?: string;
+  presetZip?: string;
   variant?: "full" | "compact";
   className?: string;
   onClick?: () => void;
@@ -16,6 +17,7 @@ export default function AvailabilitySearchWidget({
   presetProductSlug,
   presetStart,
   presetEnd,
+  presetZip,
   variant = "full",
   className = "",
   onClick,
@@ -25,6 +27,7 @@ export default function AvailabilitySearchWidget({
 
   const [start, setStart] = useState(presetStart || "");
   const [end, setEnd] = useState(presetEnd || "");
+  const [zip, setZip] = useState(presetZip || "");
   const [error, setError] = useState("");
 
   if (variant === "compact") {
@@ -41,10 +44,15 @@ export default function AvailabilitySearchWidget({
       setError("Please enter your event date.");
       return;
     }
+    if (zip.length !== 5) {
+      setError("Please enter your 5-digit delivery ZIP code.");
+      return;
+    }
     setError("");
     const params = new URLSearchParams({
       start,
       end: end || start,
+      zip,
     });
     if (presetProductSlug) params.set("product", presetProductSlug);
     router.push("/availability?" + params.toString());
@@ -81,6 +89,20 @@ export default function AvailabilitySearchWidget({
             className={ic}
           />
         </div>
+      </div>
+      <div className="mt-3 min-w-0">
+        <label className={lc + " text-blue-950"}>Delivery ZIP Code</label>
+        <input
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]{5}"
+          maxLength={5}
+          placeholder="e.g. 77069"
+          value={zip}
+          onChange={(e) => setZip(e.target.value.replace(/[^0-9]/g, "").slice(0, 5))}
+          className={ic}
+          required
+        />
       </div>
       {error && <p className="text-red-600 text-sm font-medium mt-3">{error}</p>}
       <button type="submit" className="btn-primary w-full text-lg mt-4">

@@ -1,14 +1,28 @@
 import Link from "next/link";
 import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 
+export const dynamic = "force-dynamic";
+
+async function getActiveCategorySet(): Promise<Set<string>> {
+  try {
+    const { getActiveCategories } = await import("@/lib/products");
+    return new Set(await getActiveCategories());
+  } catch {
+    return new Set();
+  }
+}
+
+// `cats` = the product categories that back each section. A section is only
+// shown when at least one of its categories has active inventory, so empty
+// sections stay hidden and reappear automatically once products are seeded.
 const categories = [
-  { icon: "🏰", name: "Bounce Houses", desc: "Classic bouncers for every age and theme", href: "/rentals/bounce-houses" },
-  { icon: "💧", name: "Water Slides", desc: "Beat the Houston heat all summer long", href: "/rentals/water-slides" },
-  { icon: "🎠", name: "Combo Units", desc: "Bounce, slide & climb — all in one", href: "/rentals/combo-units" },
-  { icon: "🏁", name: "Obstacle Courses", desc: "Action-packed fun for older kids & teens", href: "/rentals/obstacle-courses" },
-  { icon: "🎉", name: "Party Rentals", desc: "Tents, games & extras for any event", href: "/rentals/party-rentals" },
-  { icon: "🪑", name: "Tables & Chairs", desc: "Complete your setup with seating packages", href: "/rentals/tables-chairs" },
-  { icon: "🍿", name: "Concessions", desc: "Popcorn machines, snow cones & more", href: "/rentals/concessions" },
+  { icon: "🏰", name: "Bounce Houses", desc: "Classic bouncers for every age and theme", href: "/rentals/bounce-houses", cats: ["Bounce House"] },
+  { icon: "💧", name: "Water Slides", desc: "Beat the Houston heat all summer long", href: "/rentals/water-slides", cats: ["Water Slide", "Water Combo"] },
+  { icon: "🎠", name: "Combo Units", desc: "Bounce, slide & climb — all in one", href: "/rentals/combo-units", cats: ["Combo", "Water Combo"] },
+  { icon: "🏁", name: "Obstacle Courses", desc: "Action-packed fun for older kids & teens", href: "/rentals/obstacle-courses", cats: ["Obstacle Course"] },
+  { icon: "🎉", name: "Party Rentals", desc: "Tents, games & extras for any event", href: "/rentals/party-rentals", cats: ["Party Rentals"] },
+  { icon: "🪑", name: "Tables & Chairs", desc: "Complete your setup with seating packages", href: "/rentals/tables-chairs", cats: ["Tables & Chairs"] },
+  { icon: "🍿", name: "Concessions", desc: "Popcorn machines, snow cones & more", href: "/rentals/concessions", cats: ["Concession"] },
 ];
 
 const featuredItems = [
@@ -22,14 +36,14 @@ const whyUs = [
   { icon: "⭐", title: "5-Star Rated", desc: "Hundreds of 5-star reviews from Houston families who've trusted us to show up and deliver." },
   { icon: "🚚", title: "Delivery & Setup", desc: "We load, deliver, set up, and pick up — you enjoy the party. Delivery is quoted at checkout based on your address." },
   { icon: "🧼", title: "Spotlessly Clean", desc: "Every inflatable is sanitized top to bottom after every rental. Always." },
-  { icon: "📅", title: "Easy Online Booking", desc: "Reserve in minutes. We confirm within 2 hours and walk you through every detail." },
+  { icon: "📅", title: "Easy Online Booking", desc: "Reserve in minutes. We confirm within 1–2 business days and walk you through every detail." },
   { icon: "🏠", title: "Local & Family-Owned", desc: "We're a Houston business. When you call, a real local person answers." },
 ];
 
 const steps = [
   { icon: "📅", title: "Choose Your Date", desc: "Pick your event date and browse available inflatables." },
   { icon: "🏰", title: "Select an Inflatable", desc: "Choose from our premium selection of bounce houses and combos." },
-  { icon: "✅", title: "Book & Confirm", desc: "Complete your booking online. We'll confirm all details within 2 hours." },
+  { icon: "✅", title: "Book & Confirm", desc: "Complete your booking online. We'll confirm all details within 1–2 business days." },
   { icon: "🚚", title: "We Deliver & Set Up", desc: "Our team delivers, sets up, and picks up — you enjoy the party!" },
 ];
 
@@ -96,7 +110,11 @@ const faqPreview = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const activeCategorySet = await getActiveCategorySet();
+  const visibleCategories = categories.filter((cat) =>
+    cat.cats.some((c) => activeCategorySet.has(c))
+  );
   return (
     <>
       {/* Hero */}
@@ -138,12 +156,12 @@ export default function HomePage() {
             <h2 className="text-3xl sm:text-4xl font-black text-blue-950 mb-3">What Can We Bring to Your Party?</h2>
             <p className="text-gray-600 max-w-xl mx-auto">From classic bouncers to water slides and party extras — we&apos;ve got everything you need.</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
-            {categories.map((cat) => (
+          <div className="flex flex-wrap justify-center gap-4">
+            {visibleCategories.map((cat) => (
               <Link
                 key={cat.name}
                 href={cat.href}
-                className="flex flex-col items-center text-center p-4 rounded-2xl border border-gray-200 hover:border-yellow-400 hover:shadow-md transition-all group bg-gray-50 hover:bg-white"
+                className="flex flex-col items-center text-center p-4 rounded-2xl border border-gray-200 hover:border-yellow-400 hover:shadow-md transition-all group bg-gray-50 hover:bg-white w-[calc(50%-0.5rem)] sm:w-40 lg:w-44"
               >
                 <span className="text-4xl mb-2">{cat.icon}</span>
                 <span className="font-bold text-blue-950 text-sm group-hover:text-yellow-600 transition-colors leading-snug">{cat.name}</span>
@@ -351,10 +369,10 @@ export default function HomePage() {
           </div>
           <div className="mt-6">
             <a
-              href="tel:+18327161836"
+              href="tel:+13462443261"
               className="text-blue-950 font-bold underline underline-offset-4"
             >
-              Or call us: 📞 (832) 716-1836
+              Or call us: 📞 (346) 244-3261
             </a>
           </div>
         </div>

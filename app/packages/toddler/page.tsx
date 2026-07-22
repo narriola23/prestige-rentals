@@ -101,7 +101,7 @@ export default async function ToddlerPackagePage() {
           <h2 className="text-2xl font-black text-blue-950 mb-2">Ready to Book Your Toddler Party?</h2>
           <p className="text-blue-800 mb-6">Check availability for your date and reserve online in minutes.</p>
           <div className="max-w-xl mx-auto text-left mb-4"><AvailabilitySearchWidget /></div>
-          <a href="tel:+18327161836" className="text-blue-950 font-bold underline underline-offset-4">Or call: 📞 (832) 716-1836</a>
+          <a href="tel:+13462443261" className="text-blue-950 font-bold underline underline-offset-4">Or call: 📞 (346) 244-3261</a>
         </section>
 
         <section>
