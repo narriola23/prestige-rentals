@@ -71,7 +71,7 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
   - `ADMIN_PASSWORD` = ✅ Set (see Render dashboard — do not commit value here)
   - `DATABASE_URL` = ✅ Set (Internal Database URL from prestige-rentals-db)
   - `RESEND_API_KEY` = ✅ Set (Resend account: narriola23@gmail.com, key name: prestige-rentals-contact)
-  - `CONTACT_EMAIL` = not set (defaults to narriola23@gmail.com in the API route)
+  - `CONTACT_EMAIL` = ✅ Set to `bounceprestigerentals@gmail.com` as of 7/22/2026 (the code default, `narriola23@gmail.com`, now only applies if the var is ever removed)
   - `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` / `STRIPE_WEBHOOK_SECRET` = ✅ Set (test mode). Stripe account: narriola23@gmail.com, sandbox "New business sandbox" (acct_1Tp99RCCSyBsaqPj). Webhook destination "energetic-glow" (we_1Tp9sdCCSyBsaqPjmM0DfTMG) → `https://prestige-rentals.onrender.com/api/webhooks/stripe`, events `payment_intent.succeeded` + `payment_intent.payment_failed`. Verified end-to-end on the live site with a test card (4242 4242 4242 4242) on 7/3/2026. **Still test mode — not live/real payments yet.**
 
 ## Local Development
@@ -82,7 +82,8 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 ## Email Setup
 - Contact form at `/contact` POSTs to `/app/api/contact/route.ts`; quote form at `/quote` → `/app/api/quote/route.ts`. Both use Resend (resend.com) via native fetch — no npm package.
 - **Custom domain `prestigerentalshouston.com` is verified in Resend (7/21/2026)** — DKIM + SPF (MX/TXT on `send.`) + DMARC records live at Porkbun. `from:` in both routes is `Prestige Rentals <notifications@prestigerentalshouston.com>`. (No inbound/receiving configured in Resend — send-only.)
-- **Inbound `info@prestigerentalshouston.com` → forwards to `bounceprestigerentals@gmail.com`** via Porkbun free Email Forwarding (a business Gmail the client set up). This is the customer-facing display address shown site-wide. Form submissions themselves still go to `CONTACT_EMAIL` (defaults to `narriola23@gmail.com` in both API routes) — consider pointing that at the business Gmail too for consistency.
+- **Inbound `info@prestigerentalshouston.com` → forwards to `bounceprestigerentals@gmail.com`** via Porkbun free Email Forwarding (a business Gmail the client set up). This is the customer-facing display address shown site-wide. **Form submissions also go to `bounceprestigerentals@gmail.com` as of 7/22/2026** — the `CONTACT_EMAIL` env var on Render was pointed at the business Gmail, so both inbound `info@` mail and contact/quote submissions now land in the same client-owned inbox.
+- ⚠️ Both API routes do `to: [toEmail]` from a single string (`app/api/contact/route.ts:16`, `app/api/quote/route.ts:16`), so `CONTACT_EMAIL` holds **exactly one address** — a comma-separated list will not work without a code change to split it.
 - ⚠️ A Porkbun Email **Hosting** free trial (10GB, expires 2026-08-06) got auto-provisioned and sits "pending setup" — harmless, auto-removes if not set up; not used (we use forwarding, not hosting).
 
 ---
@@ -183,11 +184,11 @@ Domain property `prestigerentalshouston.com` created under **`bounceprestigerent
 - **Notes for next time:** Porkbun's per-record "Add Record" form still stages behind **Submit Records** with "Do not delete existing records" CHECKED (it was, and the A record + SPF/DKIM survived — verified via `nslookup`). Search Console showed **"Couldn't fetch"** immediately after submitting the sitemap; that was premature — it flipped to **Success** on the next page load. Don't chase it.
 - Nothing to watch here for a few days; indexing data (Performance/Pages) will start populating on its own.
 
-### 3. (Small, optional) Point form submissions at the business Gmail
-Contact/quote submissions currently go to `CONTACT_EMAIL` (defaults to `narriola23@gmail.com`). Client is consolidating business mail into `bounceprestigerentals@gmail.com` — offered to set the `CONTACT_EMAIL` env var on Render to match (no code change needed); awaiting their go-ahead.
+### 3. ✅ DONE (7/22/2026) — form submissions point at the business Gmail
+`CONTACT_EMAIL` on Render set to `bounceprestigerentals@gmail.com`. No code change; the env var update triggered a redeploy. Contact and quote submissions now land in the same client-owned inbox as forwarded `info@` mail.
 
-### 4. Switch Stripe to live mode (when ready to accept real payments)
-- See "Stripe" section above for exact steps
+### 4. Switch Stripe to live mode — THE LAST BIG ITEM (waiting on the client's go-ahead)
+- See "Stripe" section above for exact steps. Client has not green-lit real payments yet; do not switch without an explicit go-ahead.
 
 ### Later / not yet scheduled
 - Wire add-ons into the checkout flow itself (currently informational-only on product pages)
@@ -200,7 +201,8 @@ Contact/quote submissions currently go to `CONTACT_EMAIL` (defaults to `narriola
 ## Update This Section After Every Session
 **Last updated:** 7/22/2026 (second session that day)
 **Last thing completed:** **Google Search Console is live** (Next Steps #2 — no code change, so no PR beyond this docs update). Domain property `prestigerentalshouston.com` added under `bounceprestigerentals@gmail.com`, ownership verified via a DNS TXT record added at Porkbun, and `sitemap.xml` submitted — **status Success, 49 pages discovered**. Verified independently with `nslookup` (TXT resolves on 8.8.8.8; existing A record `216.24.57.1` and SPF survived the Porkbun edit) and with a Googlebot-UA fetch of `/sitemap.xml` (200, `application/xml`) plus `/robots.txt` (allows crawl, points at the sitemap).
-**Next session should start at:** Next Steps #3 — set `CONTACT_EMAIL` on Render to `bounceprestigerentals@gmail.com` (one env var, no code change) once the client confirms. Then #4, Stripe live mode, when they're ready for real payments. Nothing is blocked on code right now.
+Also this session: **Next Steps #3 done** — `CONTACT_EMAIL` on Render set to `bounceprestigerentals@gmail.com` (env var only, no code change; triggered a redeploy).
+**Next session should start at:** #4, Stripe live mode — the last big item, and explicitly gated on the client saying they're ready for real payments. Nothing is blocked on code.
 **Open PR to merge:** this docs PR only.
 
 ---
