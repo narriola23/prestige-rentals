@@ -165,7 +165,7 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 - Add-ons are seeded and displayed on product pages, but aren't yet selectable/priced into the checkout flow itself — informational only for now
 - Delivery fee uses straight-line (haversine) ZIP-centroid distance, not real driving distance — a deliberate simplification, revisit if it proves inaccurate in practice
 - `service_zip_codes` now has ~99 ZIPs from the client's intake list — still not necessarily exhaustive of the real delivery radius
-- Resend sends from `onboarding@resend.dev` until custom domain verified
+- ~~Resend sends from `onboarding@resend.dev` until custom domain verified~~ — resolved 7/21/2026, now sends from `notifications@prestigerentalshouston.com`
 - **Phone number is now (346) 244-3261 everywhere in code** (old 832-716-1836 fully removed; Footer hardcodes the new number rather than reading the env var). ⚠️ The `NEXT_PUBLIC_BUSINESS_PHONE` Render env var still holds the old `8327161836` — it's only consumed server-side now (the payment-intent SMS-notification fallback), but **update it to (346) 244-3261 on Render** to fully retire the old number.
 - Static route pages use `export const dynamic = "force-dynamic"` for DB fetches
 - Stripe is live in test mode, not real/live payments yet (see "Stripe" above)
@@ -178,8 +178,10 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 Bought at Porkbun. Pointed at Render (apex `A → 216.24.57.1` + `www` CNAME → onrender, www redirects to apex), SSL issued. `SITE_URL` updated (feeds sitemap/robots/schema), and a Host-based 308 permanent redirect sends all `prestige-rentals.onrender.com` traffic to the custom domain. Email domain verified in Resend + `info@` forwarding set up (see Email Setup).
 - **Porkbun DNS gotchas (for next time):** the DNS editor is write-only (never lists existing records) and stages edits behind a "Submit Records" button; "Do not delete existing records" must stay CHECKED to merge (unchecking = replace-all). Apex must be an **A record to `216.24.57.1`, NOT an ALIAS** — the ALIAS flattens to Cloudflare IPs with an AAAA that Render's apex verification rejects.
 
-### 2. Google Search Console (remaining SEO step) — needs the client's Google account
-Add `prestigerentalshouston.com` as a property (verify via a DNS TXT record at Porkbun) and submit `/sitemap.xml`. A formal "Change of Address" from the onrender.com URL isn't possible (can't domain-verify an onrender subdomain) — the 308 redirect above is the substitute. **Client is leaning toward owning the property under `bounceprestigerentals@gmail.com`** (their business Gmail — recommended). When they're logged into Search Console as that account, drive it in Chrome: add property → add the DNS TXT at Porkbun → submit sitemap.
+### 2. ✅ DONE (7/22/2026) — Google Search Console is set up and verified
+Domain property `prestigerentalshouston.com` created under **`bounceprestigerentals@gmail.com`** (the client's business Gmail), verified via DNS TXT at Porkbun (`google-site-verification=lasbXpQnIRSPN5UHy2zYPY9W3xUmYJpkQGBouNh2rH0`, host blank/root, TTL 600 — **do not remove this record or verification is lost**). `https://prestigerentalshouston.com/sitemap.xml` submitted; status **Success, 49 pages discovered**. A formal "Change of Address" from the onrender.com URL isn't possible (can't domain-verify an onrender subdomain) — the 308 redirect above is the substitute.
+- **Notes for next time:** Porkbun's per-record "Add Record" form still stages behind **Submit Records** with "Do not delete existing records" CHECKED (it was, and the A record + SPF/DKIM survived — verified via `nslookup`). Search Console showed **"Couldn't fetch"** immediately after submitting the sitemap; that was premature — it flipped to **Success** on the next page load. Don't chase it.
+- Nothing to watch here for a few days; indexing data (Performance/Pages) will start populating on its own.
 
 ### 3. (Small, optional) Point form submissions at the business Gmail
 Contact/quote submissions currently go to `CONTACT_EMAIL` (defaults to `narriola23@gmail.com`). Client is consolidating business mail into `bounceprestigerentals@gmail.com` — offered to set the `CONTACT_EMAIL` env var on Render to match (no code change needed); awaiting their go-ahead.
@@ -196,9 +198,16 @@ Contact/quote submissions currently go to `CONTACT_EMAIL` (defaults to `narriola
 ---
 
 ## Update This Section After Every Session
-**Last updated:** 7/22/2026
-**Last thing completed:** **Custom domain cutover — `prestigerentalshouston.com` is live** (PR #24, merged). Bought at Porkbun; added to Render as apex (primary) + www (redirects to apex); apex `A → 216.24.57.1` (NOT ALIAS — see Next Steps gotcha), www CNAME → onrender; SSL issued for both. Code: `SITE_URL` → custom domain (feeds sitemap/robots/schema), city-page URL refactored to import `SITE_URL`, display email `info@prestigerentals.com` → `info@prestigerentalshouston.com` everywhere (old was a domain we don't own), Resend `from:` → `notifications@prestigerentalshouston.com`, and a Host-based 308 redirect from the onrender.com host → custom domain. Resend email domain verified (DKIM/SPF/DMARC at Porkbun). Porkbun email forwarding `info@prestigerentalshouston.com` → `bounceprestigerentals@gmail.com`. Verified live in prod: HTTPS+valid SSL on the custom domain, onrender→custom 308 redirect, sitemap emits custom-domain URLs. Earlier this session: PR #23 (7/10 task list) merged + `NEXT_PUBLIC_BUSINESS_PHONE` Render env var updated to (346) 244-3261.
-**Next session should start at:** Google Search Console (Next Steps #2 — needs client logged into `bounceprestigerentals@gmail.com`). Quick wins if the client confirms: set `CONTACT_EMAIL` on Render to the business Gmail (#3). Then Stripe live mode (#4) when ready for real payments. **Open PR to merge:** none — this docs PR (#25) is the last; #23 and #24 are already merged.
+**Last updated:** 7/22/2026 (second session that day)
+**Last thing completed:** **Google Search Console is live** (Next Steps #2 — no code change, so no PR beyond this docs update). Domain property `prestigerentalshouston.com` added under `bounceprestigerentals@gmail.com`, ownership verified via a DNS TXT record added at Porkbun, and `sitemap.xml` submitted — **status Success, 49 pages discovered**. Verified independently with `nslookup` (TXT resolves on 8.8.8.8; existing A record `216.24.57.1` and SPF survived the Porkbun edit) and with a Googlebot-UA fetch of `/sitemap.xml` (200, `application/xml`) plus `/robots.txt` (allows crawl, points at the sitemap).
+**Next session should start at:** Next Steps #3 — set `CONTACT_EMAIL` on Render to `bounceprestigerentals@gmail.com` (one env var, no code change) once the client confirms. Then #4, Stripe live mode, when they're ready for real payments. Nothing is blocked on code right now.
+**Open PR to merge:** this docs PR only.
+
+---
+
+### Prior session (7/22/2026, earlier) — custom domain cutover
+**Completed:** **Custom domain cutover — `prestigerentalshouston.com` is live** (PR #24, merged). Bought at Porkbun; added to Render as apex (primary) + www (redirects to apex); apex `A → 216.24.57.1` (NOT ALIAS — see Next Steps gotcha), www CNAME → onrender; SSL issued for both. Code: `SITE_URL` → custom domain (feeds sitemap/robots/schema), city-page URL refactored to import `SITE_URL`, display email `info@prestigerentals.com` → `info@prestigerentalshouston.com` everywhere (old was a domain we don't own), Resend `from:` → `notifications@prestigerentalshouston.com`, and a Host-based 308 redirect from the onrender.com host → custom domain. Resend email domain verified (DKIM/SPF/DMARC at Porkbun). Porkbun email forwarding `info@prestigerentalshouston.com` → `bounceprestigerentals@gmail.com`. Verified live in prod: HTTPS+valid SSL on the custom domain, onrender→custom 308 redirect, sitemap emits custom-domain URLs. Earlier this session: PR #23 (7/10 task list) merged + `NEXT_PUBLIC_BUSINESS_PHONE` Render env var updated to (346) 244-3261.
+PRs #23, #24 and #25 all merged.
 
 ---
 
