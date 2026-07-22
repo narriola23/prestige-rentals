@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Prestige Rentals <onboarding@resend.dev>",
+      from: "Prestige Rentals <notifications@prestigerentalshouston.com>",
       to: [toEmail],
       reply_to: email,
       subject: `New Contact from ${name}`,
