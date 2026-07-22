@@ -129,7 +129,7 @@ export default function TermsPage() {
             <p className="mb-3">For questions about these Terms, contact us:</p>
             <ul className="space-y-2">
               <li>📞 <a href="tel:+13462443261" className="text-yellow-600 font-medium">(346) 244-3261</a></li>
-              <li>✉️ <a href="mailto:info@prestigerentals.com" className="text-yellow-600 font-medium">info@prestigerentals.com</a></li>
+              <li>✉️ <a href="mailto:info@prestigerentalshouston.com" className="text-yellow-600 font-medium">info@prestigerentalshouston.com</a></li>
               <li>📍 Houston, TX</li>
             </ul>
           </section>

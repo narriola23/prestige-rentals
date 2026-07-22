@@ -84,8 +84,8 @@ export default function PrivacyPolicyPage() {
             </ul>
             <p className="mt-3">
               To exercise any of these rights, contact us at{" "}
-              <a href="mailto:info@prestigerentals.com" className="text-yellow-600 underline">
-                info@prestigerentals.com
+              <a href="mailto:info@prestigerentalshouston.com" className="text-yellow-600 underline">
+                info@prestigerentalshouston.com
               </a>{" "}
               or call{" "}
               <a href="tel:+13462443261" className="text-yellow-600">
@@ -121,7 +121,7 @@ export default function PrivacyPolicyPage() {
             <p className="mb-3">For questions or concerns about this Privacy Policy, contact us:</p>
             <ul className="space-y-2">
               <li>📞 <a href="tel:+13462443261" className="text-yellow-600 font-medium">(346) 244-3261</a></li>
-              <li>✉️ <a href="mailto:info@prestigerentals.com" className="text-yellow-600 font-medium">info@prestigerentals.com</a></li>
+              <li>✉️ <a href="mailto:info@prestigerentalshouston.com" className="text-yellow-600 font-medium">info@prestigerentalshouston.com</a></li>
               <li>📍 Houston, TX</li>
             </ul>
           </section>

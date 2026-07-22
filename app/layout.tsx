@@ -15,7 +15,7 @@ const localBusinessSchema = {
   name: "Prestige Rentals",
   description: "Bounce house and inflatable rentals serving Houston, TX and Greater Houston.",
   telephone: "+13462443261",
-  email: "info@prestigerentals.com",
+  email: "info@prestigerentalshouston.com",
   url: SITE_URL,
   areaServed: {
     "@type": "State",

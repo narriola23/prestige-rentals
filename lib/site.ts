@@ -1,2 +1,2 @@
-// Update this once a custom domain is live (see CLAUDE.md > Next Steps).
-export const SITE_URL = "https://prestige-rentals.onrender.com";
+// Canonical site URL. Custom domain went live 7/21/2026.
+export const SITE_URL = "https://prestigerentalshouston.com";

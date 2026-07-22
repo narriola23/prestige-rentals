@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import AvailabilitySearchWidget from "@/components/AvailabilitySearchWidget";
 import { notFound } from "next/navigation";
+import { SITE_URL } from "@/lib/site";
 
 const cityData: Record<string, {
   name: string;
@@ -231,8 +232,8 @@ export default function ServiceAreaPage({
     name: "Prestige Rentals",
     description: `Bounce house and inflatable rentals serving ${city.name}, TX and Greater Houston.`,
     telephone: "+13462443261",
-    email: "info@prestigerentals.com",
-    url: "https://prestige-rentals.onrender.com",
+    email: "info@prestigerentalshouston.com",
+    url: SITE_URL,
     areaServed: {
       "@type": "City",
       name: city.name,

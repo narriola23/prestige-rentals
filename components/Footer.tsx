@@ -44,7 +44,7 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm">
               <li>📞 <a href="tel:+13462443261" className="hover:text-yellow-400 transition-colors">{phone}</a></li>
-              <li>✉️ <a href="mailto:info@prestigerentals.com" className="hover:text-yellow-400 transition-colors">info@prestigerentals.com</a></li>
+              <li>✉️ <a href="mailto:info@prestigerentalshouston.com" className="hover:text-yellow-400 transition-colors">info@prestigerentalshouston.com</a></li>
               <li>📍 Houston, TX &amp; Surrounding Areas</li>
               <li className="pt-1">🕐 Mon–Sun: 7am – 8pm</li>
             </ul>
