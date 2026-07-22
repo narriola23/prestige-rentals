@@ -80,10 +80,10 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 - To run against the real Render DB locally: grab the **External Database URL** from the Render dashboard (prestige-rentals-db → Connect → External) and put it in `.env.local` as `DATABASE_URL=...`. There is no staging database — this is the production DB, so be careful with test bookings (clean up test rows manually afterward).
 
 ## Email Setup
-- Contact form at `/contact` POSTs to `/app/api/contact/route.ts`
-- Uses Resend (resend.com) via native fetch — no npm package needed
-- From address is `onboarding@resend.dev` until a custom domain is verified on Resend
-- To enable a custom from address (e.g. hello@prestigerentals.com): verify domain in Resend dashboard → Domains, then update `from:` in `app/api/contact/route.ts`
+- Contact form at `/contact` POSTs to `/app/api/contact/route.ts`; quote form at `/quote` → `/app/api/quote/route.ts`. Both use Resend (resend.com) via native fetch — no npm package.
+- **Custom domain `prestigerentalshouston.com` is verified in Resend (7/21/2026)** — DKIM + SPF (MX/TXT on `send.`) + DMARC records live at Porkbun. `from:` in both routes is `Prestige Rentals <notifications@prestigerentalshouston.com>`. (No inbound/receiving configured in Resend — send-only.)
+- **Inbound `info@prestigerentalshouston.com` → forwards to `bounceprestigerentals@gmail.com`** via Porkbun free Email Forwarding (a business Gmail the client set up). This is the customer-facing display address shown site-wide. Form submissions themselves still go to `CONTACT_EMAIL` (defaults to `narriola23@gmail.com` in both API routes) — consider pointing that at the business Gmail too for consistency.
+- ⚠️ A Porkbun Email **Hosting** free trial (10GB, expires 2026-08-06) got auto-provisioned and sits "pending setup" — harmless, auto-removes if not set up; not used (we use forwarding, not hosting).
 
 ---
 
@@ -174,12 +174,14 @@ Parents, families, schools, churches, daycares, HOAs, small businesses — mostl
 
 ## Next Steps (priority order)
 
-### 1. Buy a custom domain (unlocks both items below)
-One domain purchase (~$10–20/year for a `.com`; Cloudflare Registrar or Namecheap sell at/near cost, avoid GoDaddy's renewal pricing) serves two separate purposes — worth keeping distinct:
-- **Website domain** (e.g. `prestigerentalshouston.com` → Render) — this is the actual SEO-relevant piece. Point it at Render (Dashboard → service → Settings → Custom Domains, free on any plan including the free tier, auto-provisions SSL), then update `lib/site.ts`'s `SITE_URL` and the separate hardcoded URL in `app/service-areas/[city]/page.tsx`. Since the site is already indexed under `onrender.com`, use Search Console's "Change of Address" tool and/or a 301 redirect when switching, so accumulated ranking signal isn't lost/split across two domains.
-- **Resend custom email domain** — affects deliverability/trust, not search rankings. Verify the same domain in Resend (Dashboard → Domains, free, just DNS TXT records), then update `from:` in `app/api/contact/route.ts` and `app/api/quote/route.ts` away from `onboarding@resend.dev`.
+### 1. ✅ DONE (7/21/2026) — Custom domain `prestigerentalshouston.com` is live
+Bought at Porkbun. Pointed at Render (apex `A → 216.24.57.1` + `www` CNAME → onrender, www redirects to apex), SSL issued. `SITE_URL` updated (feeds sitemap/robots/schema), and a Host-based 308 permanent redirect sends all `prestige-rentals.onrender.com` traffic to the custom domain. Email domain verified in Resend + `info@` forwarding set up (see Email Setup).
+- **Porkbun DNS gotchas (for next time):** the DNS editor is write-only (never lists existing records) and stages edits behind a "Submit Records" button; "Do not delete existing records" must stay CHECKED to merge (unchecking = replace-all). Apex must be an **A record to `216.24.57.1`, NOT an ALIAS** — the ALIAS flattens to Cloudflare IPs with an AAAA that Render's apex verification rejects.
 
-### 2. Switch Stripe to live mode (when ready to accept real payments)
+### 2. Google Search Console (remaining SEO step) — needs the client's Google account
+Add `prestigerentalshouston.com` as a property (verify via a DNS TXT record at Porkbun) and submit `/sitemap.xml`. A formal "Change of Address" from the onrender.com URL isn't possible (can't domain-verify an onrender subdomain) — the 308 redirect above is the substitute. Client is deciding whether to own the property under `bounceprestigerentals@gmail.com` (recommended: yes — dedicated business account).
+
+### 3. Switch Stripe to live mode (when ready to accept real payments)
 - See "Stripe" section above for exact steps
 
 ### Later / not yet scheduled
@@ -191,8 +193,13 @@ One domain purchase (~$10–20/year for a `.com`; Cloudflare Registrar or Namech
 ---
 
 ## Update This Section After Every Session
-**Last updated:** 7/10/2026
-**Last thing completed:** Client task list (`prestige-updates-2026-07-10.md`), branch `feature/site-updates-2026-07-10`:
+**Last updated:** 7/22/2026
+**Last thing completed:** **Custom domain cutover — `prestigerentalshouston.com` is live** (PR #24, merged). Bought at Porkbun; added to Render as apex (primary) + www (redirects to apex); apex `A → 216.24.57.1` (NOT ALIAS — see Next Steps gotcha), www CNAME → onrender; SSL issued for both. Code: `SITE_URL` → custom domain (feeds sitemap/robots/schema), city-page URL refactored to import `SITE_URL`, display email `info@prestigerentals.com` → `info@prestigerentalshouston.com` everywhere (old was a domain we don't own), Resend `from:` → `notifications@prestigerentalshouston.com`, and a Host-based 308 redirect from the onrender.com host → custom domain. Resend email domain verified (DKIM/SPF/DMARC at Porkbun). Porkbun email forwarding `info@prestigerentalshouston.com` → `bounceprestigerentals@gmail.com`. Verified live in prod: HTTPS+valid SSL on the custom domain, onrender→custom 308 redirect, sitemap emits custom-domain URLs. Earlier this session: PR #23 (7/10 task list) merged + `NEXT_PUBLIC_BUSINESS_PHONE` Render env var updated to (346) 244-3261.
+**Next session should start at:** Google Search Console (Next Steps #2 — needs client's Google account), then Stripe live mode when ready for real payments.
+
+---
+
+### Prior session (7/10/2026) — client task list (`prestige-updates-2026-07-10.md`), PR #23:
 1. **Phone number swap** — replaced 832-716-1836 with (346) 244-3261 / `tel:+13462443261` site-wide (~27 files); Footer now hardcodes it instead of reading `NEXT_PUBLIC_BUSINESS_PHONE`. ⚠️ Still need to update that Render env var (see Known Issues).
 2. **Empty catalog sections hidden** — homepage category grid is now DB-driven (`getActiveCategories()` in `lib/products.ts`, homepage is now `force-dynamic`); a card only shows if one of its backing `cats` has active inventory. Currently shows Bounce Houses / Water Slides / Tables & Chairs; hides Combo Units, Obstacle Courses, Party Rentals, Concessions. They reappear automatically when matching products are seeded. (Concessions elotero cart is on hold per Leslie & Eri.)
 3. **Availability ZIP gate re-added** ⚠️ **This reverses PR #22 (7/9), which removed ZIP from availability.** The search widget has a required Delivery ZIP field again; the availability page checks `isZipServiceable(zip)` and shows a "call / request a custom quote" prompt for out-of-area ZIPs (no fee shown — delivery is still priced only at checkout from the full address). Confirm the client really wants this back given it was just removed.
