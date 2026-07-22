@@ -200,8 +200,14 @@ Domain property `prestigerentalshouston.com` created under **`bounceprestigerent
 ### 4. Switch Stripe to live mode — THE LAST BIG ITEM (waiting on the client's go-ahead)
 - See "Stripe" section above for exact steps. Client has not green-lit real payments yet; do not switch without an explicit go-ahead.
 - ✅ The admin API auth fix that was blocking this is **deployed and verified in production** (7/22/2026, PR #27 — see "Admin access & auth"). While `/api/admin/bookings/{id}/mark-paid` was unauthenticated, anyone could mark their own booking paid — harmless in test mode, but a way to take real inventory for free once live payments are on. That risk is closed; nothing else gates going live.
+- **Suggested pre-flight when the go-ahead comes, in this order:**
+  1. Rotate `ADMIN_PASSWORD` on Render — it's about to guard real money rather than test-mode bookings. Set it in the Render UI directly so the value never lands in a transcript; everyone re-logs-in afterward.
+  2. Swap the 3 Stripe env vars to live keys + create the live-mode webhook endpoint (same URL and events as the test one).
+  3. Re-run the unauthenticated admin probes against production after the redeploy (`PATCH /api/admin/bookings/999999/status` etc. should be `401`) — cheap, and confirms nothing regressed on the way to live.
+  4. Do one small real-card transaction end-to-end, then refund it, before telling the client they're open for business.
 
 ### Later / not yet scheduled
+- **Per-user admin accounts** if admin access grows beyond a few trusted people — one shared password means no audit trail of who changed what, and no way to revoke one person without rotating for everyone. Not urgent at the current headcount; see "Admin access & auth".
 - Wire add-ons into the checkout flow itself (currently informational-only on product pages)
 - Consider a real driving-distance API (e.g. Google Distance Matrix) if the haversine delivery-fee approximation proves inaccurate
 - Source real photos for The White Castle
@@ -217,8 +223,8 @@ Domain property `prestigerentalshouston.com` created under **`bounceprestigerent
 
 Earlier this session: **Next Steps #2 done** — Google Search Console domain property added under `bounceprestigerentals@gmail.com`, verified via DNS TXT at Porkbun, `sitemap.xml` submitted (**Success, 49 pages**). **Next Steps #3 done** — `CONTACT_EMAIL` on Render set to `bounceprestigerentals@gmail.com`, confirmed end-to-end with a test submission that landed in the client's inbox.
 
-**Next session should start at:** #4, Stripe live mode — now genuinely the last item, and **no longer blocked** (the admin auth fix was the blocker). Still gated on the client saying they're ready for real payments.
-**Open PR to merge:** this docs PR only.
+**Next session should start at:** #4, Stripe live mode — now genuinely the last item, and **no longer blocked** (the admin auth fix was the blocker). Still gated on the client saying they're ready for real payments; Narri said they'll give the word explicitly, so **do not switch on your own initiative**. Next Steps #4 has a suggested pre-flight order (rotate `ADMIN_PASSWORD` first, then keys + webhook, then re-probe, then one real-card transaction and refund).
+**Open PR to merge:** none — everything from this session (#26, #27, #28) is merged.
 
 ---
 
