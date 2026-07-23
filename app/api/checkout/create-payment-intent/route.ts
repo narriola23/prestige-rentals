@@ -33,7 +33,14 @@ export async function POST(request: NextRequest) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: 'usd',
-      automatic_payment_methods: { enabled: true },
+      // Cards only, by deliberate choice. This excludes Link and the BNPL /
+      // alt methods (Klarna, Cash App Pay, Amazon Pay, Affirm) that
+      // automatic_payment_methods would otherwise surface, and — because
+      // Stripe periodically enables new methods by default — keeps them from
+      // reappearing later without a code change. Apple Pay and Google Pay are
+      // wallet presentations of a card, so they still show in the
+      // PaymentElement on supported devices.
+      payment_method_types: ['card'],
       metadata: { bookingId: String(bookingId) },
     });
 
